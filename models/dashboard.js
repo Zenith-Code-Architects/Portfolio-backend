@@ -36,7 +36,7 @@ const dashboardSchema = new Schema({
     education: [{
         schoolName: {type:String},
         location: {type: String},
-        program: {type: String},
+        location: {type: String},
         qualification: {type: String},
         grade: {type: String},
         startDate: {type: String},
