@@ -2,12 +2,12 @@ import { model, Schema } from "mongoose";
 import { toJSON } from '@reis/mongoose-to-json';
 
 const userSchema = new Schema({
-    firstName: { type: String },
-    lastName: { type: String },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
     userName: { type: String, unique: true },
-    email: { type: String, unique: true },
-    password: { type: String },
-    consent: { type: Boolean }
+    email: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
+    consent: { type: Boolean, required: true }
 }, {
     timestamps: true
 })

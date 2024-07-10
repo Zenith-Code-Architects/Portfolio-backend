@@ -6,6 +6,7 @@ export const user_schema = Joi.object({
         .max(30)
         .required(),
 
+
     lastName: Joi.string()
         .min(3)
         .max(30)
@@ -13,14 +14,15 @@ export const user_schema = Joi.object({
 
     userName: Joi.string()
         .min(3)
-        .max(20),
+        .max(30),
 
     email: Joi.string()
         .email()
         .required(),
 
     password: Joi.string()
-        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+        .required(),
 
     confirmPassword: Joi.ref('password'),
 

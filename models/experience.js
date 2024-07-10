@@ -3,14 +3,14 @@ import { toJSON } from '@reis/mongoose-to-json';
 
 const experienceSchema = new Schema({
     userId: { type: Types.ObjectId, ref: 'User', required: true },
-    companyName: { type: String },
-    role: { type: String },
+    companyName: { type: String, required: true },
+    role: { type: String, required: true },
     skills: { type: String },
     description: { type: String },
     employmentType: { type: String, enum: ['full-time', 'part-time', 'self-employed', 'freelance', 'contract', 'internship'] },
     location: { type: String },
     locationType: { type: String, enum: ['on-site', 'hybrid', 'remote'] },
-    startDate: { type: String },
+    startDate: { type: String, required: true },
     endDate: { type: String }
 }, {
     timestamps: true

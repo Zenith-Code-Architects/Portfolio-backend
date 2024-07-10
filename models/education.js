@@ -3,7 +3,7 @@ import { toJSON } from '@reis/mongoose-to-json';
 
 const educationSchema = new Schema({
     userId: { type: Types.ObjectId, ref: 'User', required: true },
-    schoolName: { type: String },
+    schoolName: { type: String, required: true },
     location: { type: String },
     program: { type: String },
     qualification: { type: String },

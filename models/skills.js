@@ -3,7 +3,7 @@ import { toJSON } from '@reis/mongoose-to-json';
 
 const skillsSchema = new Schema({
     userId: { type: Types.ObjectId, ref: 'User', required: true },
-    name: { type: String },
+    name: { type: String, required: true },
     levelOfProfiency: { type: String, enum: ['beginner', 'intermediate', 'advanced', 'expert'] }
 }, {
     timestamps: true
