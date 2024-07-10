@@ -13,12 +13,10 @@ export const user_schema = Joi.object({
 
     userName: Joi.string()
         .min(3)
-        .max(20)
-        .unique(),
+        .max(20),
 
     email: Joi.string()
         .email()
-        .unique()
         .required(),
 
     password: Joi.string()
