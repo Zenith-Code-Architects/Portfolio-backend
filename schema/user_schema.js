@@ -24,7 +24,5 @@ export const user_schema = Joi.object({
         .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
         .required(),
 
-    confirmPassword: Joi.ref('password'),
-
-    consent: Joi.boolean().required()
+    confirmPassword: Joi.ref('password')
 })

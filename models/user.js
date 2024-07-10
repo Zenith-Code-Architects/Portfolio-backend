@@ -6,8 +6,7 @@ const userSchema = new Schema({
     lastName: { type: String, required: true },
     userName: { type: String, unique: true },
     email: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
-    consent: { type: Boolean, required: true }
+    password: { type: String, required: true }
 }, {
     timestamps: true
 })
