@@ -1,6 +1,17 @@
-import { addUserProfile } from "../controllers/userProfile.js";
+import { addUserProfile, deleteUserprofile, getUserProfile, updateUserprofile } from "../controllers/userProfile.js";
 import { Router } from "express";
 
-export const userProfileRouter = Router();
+// create router
+const userProfileRouter = Router();
 
-userProfileRouter.post('/user/profile', addUserProfile)
+// define routes
+userProfileRouter.post('/profile', addUserProfile)
+
+userProfileRouter.get('/profile/:id', getUserProfile)
+
+userProfileRouter.patch('/profile/:id', updateUserprofile)
+
+userProfileRouter.delete('/profile/:id', deleteUserprofile)
+
+// export router
+export default userProfileRouter

@@ -1,6 +1,19 @@
-import { volunteering } from "../controllers/volunteering.js";
+import { addVolunteering, deleteVolunteering, getAllUserVolunteering, getVolunteering, updateVolunteering } from "../controllers/volunteering.js";
 import { Router } from "express";
 
-export const volunteeringRouter = Router();
+// create router
+const volunteeringRouter = Router();
 
-volunteeringRouter.post('/user/volunteering', volunteering)
+// define routes
+volunteeringRouter.post('/volunteering', addVolunteering)
+
+volunteeringRouter.get('/volunteering', getAllUserVolunteering)
+
+volunteeringRouter.get('/volunteering/:id', getVolunteering)
+
+volunteeringRouter.patch('/volunteering/:id', updateVolunteering)
+
+volunteeringRouter.delete('/volunteering/:id', deleteVolunteering)
+
+// export router
+export default volunteeringRouter

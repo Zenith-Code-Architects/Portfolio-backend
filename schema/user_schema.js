@@ -25,4 +25,4 @@ export const user_schema = Joi.object({
         .required(),
 
     confirmPassword: Joi.ref('password')
-})
+}).with('password', 'confirmPassword');
