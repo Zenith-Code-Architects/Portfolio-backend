@@ -1,3 +1,4 @@
+import { ProjectModel } from "../models/projects.js";
 import { project_schema } from "../schema/projects_schema.js";
 
 // Validation & errror handling
