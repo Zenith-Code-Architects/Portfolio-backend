@@ -21,7 +21,7 @@ export const addProject = async (req, res) => {
         // save user with the project id
         await user.save();
         // return response
-        res.status(201).json({ skill })
+        res.status(201).json({ project })
     } catch (error) {
         res.status(500).send(error)
     }

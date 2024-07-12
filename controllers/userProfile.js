@@ -48,8 +48,17 @@ export const updateUserprofile = async (req, res, next) => {
         // do an update
         const updatedUserprofile = await UserProfileModel
             .findByIdAndUpdate(req.params.id, value, { new: true });
+         // Find the user with their user id
+         const user = await UserModel.findById(value.user);
+         if (!user) {
+             return res.status(404).json('User not found')
+         }
+         // If user is found, push newly updated value inside
+         user.userProfile.push(updatedUserprofile);
+         // save user with the user profile id
+         await user.save();    
         //  return response
-        res.status(200).json(updatedUserprofile);
+        res.status(200).json({updatedUserprofile});
     } catch (error) {
         next(error)
     }

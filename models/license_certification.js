@@ -2,7 +2,7 @@ import { model, Schema, Types } from "mongoose";
 import { toJSON } from '@reis/mongoose-to-json';
 
 const licenseSchema = new Schema({
-    userId: { type: Types.ObjectId, ref: 'User', required: true },
+    user: { type: Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
     issuingOrganization: { type: String, required: true },
     issueDate: { type: String },

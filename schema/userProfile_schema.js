@@ -13,5 +13,6 @@ export const userProfile_schema = Joi.object({
     spokenLanguages: Joi.array().items(Joi.string()),
     github: Joi.string(),
     linkedln: Joi.string(),
-    twitter: Joi.string()
+    twitter: Joi.string(),
+    user: Joi.string().required()
 })

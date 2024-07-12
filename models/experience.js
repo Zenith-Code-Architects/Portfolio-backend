@@ -2,7 +2,7 @@ import { model, Schema, Types } from "mongoose";
 import { toJSON } from '@reis/mongoose-to-json';
 
 const experienceSchema = new Schema({
-    userId: { type: Types.ObjectId, ref: 'User', required: true },
+    user: { type: Types.ObjectId, ref: 'User', required: true },
     companyName: { type: String, required: true },
     role: { type: String, required: true },
     skills: { type: String },

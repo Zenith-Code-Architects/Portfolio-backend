@@ -15,4 +15,4 @@ userRouter.post('/logout', checkUserSession, logout);
 userRouter.get('/portfolio', checkUserSession, portfolio)
 
 // export router
-export default userRouter
+export default userRouter 
