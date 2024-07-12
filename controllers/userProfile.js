@@ -9,15 +9,16 @@ export const addUserProfile = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
+          // Find the user with their user id
+          const user = await UserModel.findById(value.user);
+          if (!user) {
+              return res.status(404).json('User not found')
+          }
         // create user profile with the value
         const userProfile = await UserProfileModel.create(value)
-        // Find the user with their user id
-        const user = await UserModel.findById(value.user);
-        if (!user) {
-            return res.status(404).json('User not found')
-        }
-        // If user is found, push newly created user profile id inside
-        user.userProfile.push(userProfile.id);
+        //push newly created user profile id inside
+        user.userProfile = userProfile.id;
+        // user.userProfile.assign(userProfile.id);
         // save user with the user profile id
         await user.save();
         // return response

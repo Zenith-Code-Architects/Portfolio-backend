@@ -9,14 +9,14 @@ export const addVolunteering = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
+        // Find the user with their user id
+          const user = await UserModel.findById(value.user);
+          if (!user) {
+              return res.status(404).json('User not found')
+          }
         // create volunteering with its value
         const volunteering = await VolunteeringModel.create(value)
-        // Find the user with their user id
-        const user = await UserModel.findById(value.user);
-        if (!user) {
-            return res.status(404).json('User not found')
-        }
-        // If user is found, push newly created volunteering id inside
+        //push newly created volunteering id inside
         user.volunteering.push(volunteering.id);
         // save user with the volunteering id
         await user.save();

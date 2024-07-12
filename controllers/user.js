@@ -76,6 +76,22 @@ export const portfolio = async (req, res, next) => {
       const user = await UserModel
          .findById(req.session.user.id)
          .select({ password: false })
+         .populate({
+            path: 'userProfile',
+            select: '-user'  // Exclude 'user' field from userProfile population
+         })
+         .populate({
+            path: 'projects',
+            select: '-user' 
+         })
+         .populate({
+            path: 'skills',
+            select: '-user' 
+         })
+         .populate({
+            path: 'volunteering',
+            select: '-user'
+         })
       // Return response
       res.status(200).json(user)
    } catch (error) {

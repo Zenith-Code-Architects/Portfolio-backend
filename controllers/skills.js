@@ -9,14 +9,14 @@ export const addSkill = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
+         // Find the user with their user id
+         const user = await UserModel.findById(value.user);
+         if (!user) {
+             return res.status(404).json('User not found')
+         }
         // create skill with its value
         const skill = await SkillsModel.create(value)
-        // Find the user with their user id
-        const user = await UserModel.findById(value.user);
-        if (!user) {
-            return res.status(404).json('User not found')
-        }
-        // If user is found, push newly created skill id inside
+        // push newly created skill id inside
         user.skills.push(skill.id);
         // save user with the skill id
         await user.save();

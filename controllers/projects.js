@@ -9,14 +9,14 @@ export const addProject = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        // create project with its value
-        const project = await ProjectModel.create(value)
         // Find the user with their user id
         const user = await UserModel.findById(value.user);
         if (!user) {
             return res.status(404).json('User not found')
         }
-        // If user is found, push newly created project id inside
+        // create project with its value
+        const project = await ProjectModel.create(value)
+        // push newly created project id inside
         user.projects.push(project.id);
         // save user with the project id
         await user.save();
