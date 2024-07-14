@@ -1,19 +1,18 @@
-import { addProject, deleteProject, getAllUserProjects, getProject, updateProjects } from "../controllers/projects.js";
+import { addProject, deleteProject, getAllUserProjects, updateProjects } from "../controllers/projects.js";
 import { Router } from "express";
+import { checkUserSession } from "../middleware/auth.js";
 
-// create router
-const projectRouter = Router()
+// Create router
+const projectRouter = Router();
 
-// define routes
-projectRouter.post('/projects', addProject)
+// Define routes
+projectRouter.post('/projects', checkUserSession, addProject); // POST /projects
 
-projectRouter.get('/projects', getAllUserProjects)
+projectRouter.get('/projects', getAllUserProjects); // GET /projects
 
-projectRouter.get('/projects/:id', getProject)
+projectRouter.patch('/projects/:id', updateProjects); // PATCH /projects/:id
 
-projectRouter.patch('/projects/:id', updateProjects)
+projectRouter.delete('/projects/:id', deleteProject); // DELETE /projects/:id
 
-projectRouter.delete('/projects/:id', deleteProject)
-
-// export router
-export default projectRouter
+// Export router
+export default projectRouter;

@@ -1,4 +1,4 @@
-import { addVolunteering, deleteVolunteering, getAllUserVolunteering, getVolunteering, updateVolunteering } from "../controllers/volunteering.js";
+import { addVolunteering, deleteVolunteering, getAllUserVolunteering, updateVolunteering } from "../controllers/volunteering.js";
 import { Router } from "express";
 
 // create router
@@ -8,8 +8,6 @@ const volunteeringRouter = Router();
 volunteeringRouter.post('/volunteering', addVolunteering)
 
 volunteeringRouter.get('/volunteering', getAllUserVolunteering)
-
-volunteeringRouter.get('/volunteering/:id', getVolunteering)
 
 volunteeringRouter.patch('/volunteering/:id', updateVolunteering)
 
