@@ -10,14 +10,14 @@ const userProfileRouter = Router();
 userProfileRouter.post('/profile', remoteUpload.fields([
     { name: 'profilePicture', maxCount: 1 },
     { name: 'resume', maxCount: 1 }
-]), addUserProfile);
+]), checkUserSession, addUserProfile);
 
 userProfileRouter.get('/profile', getUserProfile);
 
 userProfileRouter.patch('/profile/:id', remoteUpload.fields([
     { name: 'profilePicture', maxCount: 1 },
     { name: 'resume', maxCount: 1 }
-]), updateUserProfile);
+]), checkUserSession, updateUserProfile);
 
 // userProfileRouter.delete('/profile/:id', deleteUserProfile);
 

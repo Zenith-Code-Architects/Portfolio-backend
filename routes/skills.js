@@ -7,9 +7,9 @@ const skillRouter = Router();
 
 skillRouter.post('/skills', checkUserSession, addSkill)
 
-skillRouter.get('/skills', getAllUserSkills)
+skillRouter.get('/skills', checkUserSession, getAllUserSkills)
 
-skillRouter.patch('/skills/:id', updateSkills)
+skillRouter.patch('/skills/:id', checkUserSession, updateSkills)
 
 skillRouter.delete('/skills/:id', checkUserSession, deleteSkill)
 
