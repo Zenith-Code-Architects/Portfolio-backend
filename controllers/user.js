@@ -2,33 +2,23 @@ import { UserModel } from "../models/user.js";
 import { user_schema } from "../schema/user_schema.js";
 import bcrypt from 'bcrypt';
 
-// Check if email exists
-export const checkEmailExists = async (req, res, next) => {
-   try {
-      const { email } = req.params;
-      const existingEmail = await UserModel.findOne({ email });
-      if (existingEmail) {
-         return res.status(200).json({ error: 'Email already exists' });
-      }
-      res.status(200).json({ message: 'Email available' });
-   } catch (error) {
-      next(error);
+// Check if username or email exists
+export const getUsers = async (req, res) => {
+   const email = req.query.email?.toLowerCase()
+   const userName = req.query.userName?.toLowerCase();
+ 
+   const filter = {};
+   if (email) {
+     filter.email = email;
    }
-};
-
-// Check if username exists
-export const checkUsernameExists = async (req, res, next) => {
-   try {
-      const { userName } = req.params;
-      const existingUsername = await UserModel.findOne({ userName });
-      if (existingUsername) {
-         return res.status(200).json('Username already exists');
-      }
-      res.status(200).json('Username available');
-   } catch (error) {
-      next(error);
+   if (userName) {
+     filter.userName = userName;
    }
-};
+ 
+   const users = await UserModel.find(filter);
+ 
+   return res.status(200).json({ users });
+ };
 
 // Sign up with validation & error handling
 export const signUp = async (req, res, next) => {
@@ -50,7 +40,6 @@ export const signUp = async (req, res, next) => {
       }
       // Hash password before saving
       value.password = await bcrypt.hash(value.password, 12);
-
       // Create user
       await UserModel.create(value);
 
@@ -101,10 +90,11 @@ export const logout = async (req, res, next) => {
 // get user portfolio
 export const portfolio = async (req, res, next) => {
    try {
-      const userId = req.session.user.id;
+      const userName = req.params.userName.toLowerCase();
+      const userDetails = await UserModel.findOne({ userName })
 
       const user = await UserModel
-         .findById(userId)
+         .findOne({ userName })
          .select('-password -createdAt -updatedAt') // Exclude password field from the user document
 
          // Populate user profile, projects, skills, and volunteering details
@@ -129,60 +119,14 @@ export const portfolio = async (req, res, next) => {
             options: { lean: true }
          });
 
-  // Ensure profile picture and resume URLs are populated correctly
-//  console.log('Profile Picture URL:', user.userProfile.profilePicture);
-//   console.log('Resume URL:', user.resume);
-
       if (!user) {
          return res.status(404).json({ message: 'User not found' });
       }
 
       // Return the complete user portfolio
-      res.status(200).json(user);
+      res.status(200).json({ user: userDetails });
    } catch (error) {
       next(error);
    }
 };
 
-
-// code below will fetch portfolio with or without login session
-// export const portfolio = async (req, res, next) => {
-//     try {
-//         const userId = req.params.id; // Assuming userId is passed as a URL parameter
-
-//         const user = await UserModel
-//             .findById(userId)
-//             .select('-password') // Exclude password field from the user document
-
-//             // Populate user profile, projects, skills, and volunteering details
-//             .populate({
-//                 path: 'userProfile',
-//                 select: '-user', // Exclude 'user' field from userProfile population
-//                 options: { lean: true } // Return Mongoose documents as plain JavaScript objects
-//             })
-//             .populate({
-//                 path: 'projects',
-//                 select: '-user', // Exclude 'user' field from projects population
-//                 options: { lean: true }
-//             })
-//             .populate({
-//                 path: 'skills',
-//                 select: '-user', // Exclude 'user' field from skills population
-//                 options: { lean: true }
-//             })
-//             .populate({
-//                 path: 'volunteering',
-//                 select: '-user', // Exclude 'user' field from volunteering population
-//                 options: { lean: true }
-//             });
-
-//         if (!user) {
-//             return res.status(404).json({ message: 'User not found' });
-//         }
-
-//         // Return the complete user portfolio
-//         res.status(200).json(user);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
