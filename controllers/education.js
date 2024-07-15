@@ -1,6 +1,6 @@
 import { EducationModel } from "../models/education.js";
 import { UserModel } from "../models/user.js";
-import {education_schema} from "../schema/education_schema.js";
+import { education_schema } from "../schema/education_schema.js";
 
 // Validation & errror handling
 export const addEducation = async (req, res) => {
@@ -9,14 +9,17 @@ export const addEducation = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-         //create education with the value
-        const education = await EducationModel.create(value)
+        console.log('userId', req.session.user.id)
+        const userSessionId = req.session.user.id
+       
         //after, find the user with the id that you passed when creating the education 
-        const user = await UserModel.findById(value.user);
+        const user = await UserModel.findById(userSessionId);
         if (!user) {
             return res.status(404).send('User not found');
         }
         //if you find the user, push the education id you just created inside
+         //create education with the value
+        const education = await EducationModel.create({...value, user:userSessionId})
         user.education.push(education._id);
         //and save the user now with the educationId
         await user.save();
@@ -29,20 +32,14 @@ export const addEducation = async (req, res) => {
 
 export const getEducation = async (req, res, next) => {
     try {
-        const userId = req.params.id;
-        const idEducation = req.param.id
-        if (idEducation) {
-          //Get filtered  education from database
-          const allEducation = await EducationModel.findById(idEducation)
-          //Return all filtered education
-         return res.send(allEducation)
-        } else {
-        const allEducation = await EducationModel.find({user: userId})
+        //we are fetching education that belongs to a particular user
+        const userSessionId = req.session.user.id;
+        const allEducation = await EducationModel.find({ user: userSessionId })
         if (allEducation.length == 0) {
             return res.status(400).send('No education provided')
         }
-        res.status(200).json({ education:allEducation })
-        }
+        res.status(200).json({ education: allEducation })
+
     } catch (error) {
         next(error)
     }
@@ -55,13 +52,19 @@ export const updateEducation = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
+        const userSessionId = req.session.user.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
         const education = await EducationModel.findByIdAndUpdate(
-            value,
             req.params.id,
             req.body,
             { new: true }
         )
-        res.status(201).json({ education })
+        if (!education) {
+            return res.status(404).send('Education not found');
+        }
     } catch (error) {
         res.status(500)
     }
@@ -69,13 +72,19 @@ export const updateEducation = async (req, res) => {
 
 export const deleteEducation = async (req, res) => {
     try {
-        const { error, value } = education_schema.validate(req.params.id)
-        if (error) {
-            return res.status(400).send(error.details[0].message)
+        const idEducation = req.session.user.id
+        const user = await UserModel.findById(idEducation);
+        if (!user) {
+          return res.status(404).send("User not found");
         }
-        const education = await EducationModel.findByIdAndDelete(value)
-        res.status(200).json({ education })
+        const education = await EducationModel.findByIdAndDelete(req.params.id)
+        if (!education) {
+            return res.status(404).send('Education not found');
+        }
+        user.education.pull(req.params.id);
+        await user.save();
+      res.status(200).json("Education deleted");
     } catch (error) {
-        res.status(500)
+        res.status(500).json({error})
     }
-}
+};

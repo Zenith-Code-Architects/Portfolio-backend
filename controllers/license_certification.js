@@ -9,13 +9,16 @@ export const addLicense = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        //Create license with the value
-        const license = await LicenseModel.create(value)
-        //after, find the user with the id that you passed when creating the license 
-        const user = await UserModel.findById(value.user);
+        console.log('userId', req.session.user.id)
+        const userSessionId = req.session.user.id
+
+        //after, find the user with the id that you passed when creating the education 
+        const user = await UserModel.findById(userSessionId);
         if (!user) {
             return res.status(404).send('User not found');
         }
+        //Create license with the value
+        const license = await LicenseModel.create({ ...value, user: userSessionId })
         //if you find the user, push the license id you just created inside
         user.achievement.push(achievement._id);
 
@@ -29,20 +32,14 @@ export const addLicense = async (req, res) => {
 
 export const getLicense = async (req, res, next) => {
     try {
-        const userId = req.params.id;
-        const idLicense = req.param.id
-        if (idLicense) {
-            //Get filtered  licenses from database
-            const allLicense = await LicenseModel.findById(idLicense)
-            //Return all filtered licenses
-            return res.send(allLicense)
-        } else {
-            const allLicense = await LicenseModel.find({user: userId})
-            if (allLicense.length == 0) {
-                return res.status(400).send('No license provided')
-            }
-            res.status(200).json({ license:allLicense })
+        //we are fetching license that belongs to a particular user
+        const userSessionId = req.session.user.id;
+        const allLicense = await LicenseModel.find({ user: userSessionId })
+        if (allLicense.length == 0) {
+            return res.status(400).send('No license provided')
         }
+        res.status(200).json({ license: allLicense })
+
     } catch (error) {
         next(error)
     }
@@ -51,17 +48,23 @@ export const getLicense = async (req, res, next) => {
 export const updateLicense = async (req, res) => {
 
     try {
-        const { error, value } = experience_schema.validate(req.body)
+        const { error, value } = license_schema.validate(req.body)
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        const experience = await ExperienceModel.findByIdAndUpdate(
-            value,
+        const userSessionId = req.session.user.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        const license = await LicenseModel.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true }
         )
-        res.status(201).json({ experience })
+        if (!education) {
+            return res.status(404).send('Education not found');
+        }
     } catch (error) {
         res.status(500)
     }
@@ -69,12 +72,18 @@ export const updateLicense = async (req, res) => {
 
 export const deleteLicense = async (req, res) => {
     try {
-        const { error, value } = experience_schema.validate(req.params.id)
-        if (error) {
-            return res.status(400).send(error.details[0].message)
+        const idLicense = req.session.user.id
+        const user = await UserModel.findById(idLicense);
+        if (!user) {
+          return res.status(404).send("User not found");
         }
-        const experience = await ExperienceModel.findByIdAndDelete(value)
-        res.status(200).json({ experience })
+        const license = await LicenseModel.findByIdAndDelete(req.params.id)
+        if (!license) {
+            return res.status(404).send('Education not found');
+        }
+        user.license.pull(req.params.id);
+        await user.save();
+      res.status(200).json("license deleted");
     } catch (error) {
         res.status(500)
     }

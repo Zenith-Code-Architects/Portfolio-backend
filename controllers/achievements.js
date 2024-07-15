@@ -10,15 +10,18 @@ export const addAchievements = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        //Create achievement with the value
-        const achievement = await AchievementModel.create(value)
+        console.log('userId', req.session.user.id)
+        const userSessionId = req.session.user.id
+
         //after, find the user with the id that you passed when creating the achievement 
-        const user = await UserModel.findById(value.user);
+        const user = await UserModel.findById(userSessionId);
         if (!user) {
             return res.status(404).send('User not found');
         }
 
         //if you find the user, push the achievement id you just created inside
+        //Create achievement with the value
+        const achievement = await AchievementModel.create({ ...value, user: userSessionId })
         user.achievement.push(achievement._id);
 
         //and save the user now with the achievementId
@@ -31,54 +34,60 @@ export const addAchievements = async (req, res) => {
 }
 
 export const getAchievements = async (req, res, next) => {
+
     try {
-        const userId = req.params.id;
-        const idAchievement = req.param.id;
-        if (idAchievement) {
-            //Get filtered  achievement from database
-            const allAchievement = await AchievementModel.findById(idAchievement)
-            //Return all filtered achievement
-            return res.send(allAchievement)
-        } else {
-            const allAchievement = await AchievementModel.find({user: userId})
-            if (allAchievement.length == 0) {
-                return res.status(400).send('No achievement provided')
-            }
-            res.status(200).json({ achievement:allAchievement })
+        const userSessionId = req.session.user.id;
+        const allAchievement = await AchievementModel.find({ user: userSessionId })
+        if (allAchievement.length == 0) {
+            return res.status(400).send('No achievement provided')
         }
+        res.status(200).json({ achievement: allAchievement })
     } catch (error) {
         next(error)
     }
 }
 
-export const updateAchievements = async (req, res) => {
-
+export const updateAchievements = async (req, res, next) => {
     try {
         const { error, value } = achievement_schema.validate(req.body)
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
+        const userSessionId = req.session.user.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
         const achievement = await AchievementModel.findByIdAndUpdate(
-            value,
             req.params.id,
             req.body,
             { new: true }
         )
-        res.status(201).json({ achievement })
+        if (!achievement) {
+            return res.status(404).send('Achievement not found');
+        } 
     } catch (error) {
-        res.status(500)
+            next(error)
+        }
+
     }
-}
+
 
 export const deleteAchievements = async (req, res) => {
     try {
-        const { error, value } = achievement_schema.validate(req.params.id)
-        if (error) {
-            return res.status(400).send(error.details[0].message)
+        const idAchievement = req.session.user.id
+        const user = await UserModel.findById(idAchievement);
+        if (!user) {
+          return res.status(404).send("User not found");
         }
-        const achievement = await AchievementModel.findByIdAndDelete(value)
-        res.status(200).json({ achievement })
+        const achievement = await AchievementModel.findByIdAndDelete(req.params.id)
+        if (!achievement) {
+            return res.status(404).send('Education not found');
+        }
+        user.achievement.pull(req.params.id);
+        await user.save();
+        res.status(200).json('Achievement Deleted')
     } catch (error) {
-        res.status(500)
+        res.status(500).json({error})
     }
 }
