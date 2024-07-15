@@ -8,11 +8,11 @@ const userRouter = Router();
 // Define routes
 userRouter.get('/user', getUsers );
 
-userRouter.post('/signup', signUp);
+userRouter.post('/auth/signup', signUp);
 
 userRouter.post('/auth/login', login);
 
-userRouter.post('/logout', checkUserSession, logout);
+userRouter.post('/auth/logout', checkUserSession, logout);
 
 userRouter.get('/portfolio/auth/:userName', portfolio)
 
