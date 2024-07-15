@@ -10,11 +10,11 @@ userRouter.get('/user', getUsers );
 
 userRouter.post('/signup', signUp);
 
-userRouter.post('/login', login);
+userRouter.post('/auth/login', login);
 
 userRouter.post('/logout', checkUserSession, logout);
 
-userRouter.get('/portfolio/:userName', portfolio)
+userRouter.get('/portfolio/auth/:userName', portfolio)
 
 // export router
 export default userRouter 

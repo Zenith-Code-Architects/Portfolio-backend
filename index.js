@@ -15,7 +15,7 @@ import mongoose from 'mongoose';
 const portfolioapp = express();
 expressOasGenerator.handleResponses(portfolioapp, {
     alwaysServeDocs: true,
-    tags: ['userProfile', 'skills', 'projects', 'volunteering'],
+    tags: ['profile', 'skills', 'projects', 'volunteering', 'auth'],
     mongooseModels: mongoose.modelNames(),
 })
 
