@@ -2,8 +2,8 @@ import { model, Schema, Types } from "mongoose";
 import { toJSON } from '@reis/mongoose-to-json';
 
 const projectSchema = new Schema({
-    userId: { type: Types.ObjectId, ref: 'User', required: true },
-    projectName: { type: String },
+    user: { type: Types.ObjectId, ref: 'User', required: true },
+    projectName: { type: String, required: true },
     program: { type: String },
     contributors: { type: String },
     skills: { type: String },

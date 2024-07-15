@@ -2,9 +2,9 @@ import { model, Schema, Types } from "mongoose";
 import { toJSON } from '@reis/mongoose-to-json';
 
 const volunteeringSchema = new Schema({
-    userId: { type: Types.ObjectId, ref: 'User', required: true },
-    organization: { type: String },
-    role: { type: String },
+    user: { type: Types.ObjectId, ref: 'User', required: true },
+    organization: { type: String, required: true },
+    role: { type: String, required: true },
     description: { type: String },
     skills: { type: String },
     location: { type: String },

@@ -8,5 +8,6 @@ export const license_schema = Joi.object({
     credentialId: Joi.string(),
     credentialUrl: Joi.string(),
     skills: Joi.string(),
-    media: Joi.string()
+    media: Joi.string(),
+    user: Joi.string().required()
 })

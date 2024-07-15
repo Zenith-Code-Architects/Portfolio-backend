@@ -2,7 +2,7 @@ import { model, Schema, Types } from "mongoose";
 import { toJSON } from '@reis/mongoose-to-json';
 
 const userProfileSchema = new Schema({
-    userId: { type: Types.ObjectId, ref: 'User', required: true },
+    user: { type: Types.ObjectId, ref: 'User', required: true },
     profilePicture: { type: String },
     location: { type: String },
     maritalStatus: { type: String, enum: ['single', 'married', 'prefer-not-to-say'] },
@@ -12,7 +12,7 @@ const userProfileSchema = new Schema({
     dateOfBirth: { type: Date },
     contact: { type: String },
     resume: { type: String },
-    spokenLanguages: [{ type: String }],
+    spokenLanguages: { type: String },
     github: { type: String },
     linkedln: { type: String },
     twitter: { type: String }
@@ -22,4 +22,4 @@ const userProfileSchema = new Schema({
 
 userProfileSchema.plugin(toJSON)
 
-export const UserProfileModel = model('Userprofile', userProfileSchema)
+export const UserProfileModel = model('UserProfile', userProfileSchema)
