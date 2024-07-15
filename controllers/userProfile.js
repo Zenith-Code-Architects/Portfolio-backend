@@ -38,7 +38,10 @@ import { userProfile_schema } from "../schema/userProfile_schema.js";
 
 export const addUserProfile = async (req, res) => {
     try {
-        const { error, value } = userProfile_schema.validate(req.body);
+        const { error, value } = userProfile_schema.validate({...req.body, 
+            profilePicture: req.files.profilePicture[0].filename,
+      resume: req.files.resume[0].filename,
+    });
         if (error) {
             return res.status(400).send(error.details[0].message);
         }
@@ -83,7 +86,7 @@ export const getUserProfile = async (req, res, next) => {
             return res.status(404).json('No profile details found');
         }
         // Return response
-        res.status(200).json(userProfile);
+        res.status(200).json({userProfile});
     } catch (error) {
         next(error);
     }
@@ -92,6 +95,12 @@ export const getUserProfile = async (req, res, next) => {
 // UPDATE user profile
 export const updateUserProfile = async (req, res, next) => {
     try {
+        // validation
+        const { error, value } = userProfile_schema.validate({
+            ...req.body,
+            profilePicture: req.files.profilePicture[0].filename,
+            resume: req.files.resume[0].filename,
+          });
         // Find user profile by ID and user session ID
         const userProfile = await UserProfileModel.findOne({
             _id: req.params.id,
@@ -110,7 +119,7 @@ export const updateUserProfile = async (req, res, next) => {
         );
 
         // Return response
-        res.status(200).json(updatedUserProfile);
+        res.status(200).json({updatedUserProfile});
     } catch (error) {
         next(error);
     }

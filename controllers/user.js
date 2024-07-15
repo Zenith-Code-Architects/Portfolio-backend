@@ -22,9 +22,9 @@ export const checkUsernameExists = async (req, res, next) => {
       const { userName } = req.params;
       const existingUsername = await UserModel.findOne({ userName });
       if (existingUsername) {
-         return res.status(200).json({ error: 'Username already exists' });
+         return res.status(200).json('Username already exists');
       }
-      res.status(200).json({ message: 'Username available' });
+      res.status(200).json('Username available');
    } catch (error) {
       next(error);
    }
@@ -37,7 +37,17 @@ export const signUp = async (req, res, next) => {
       if (error) {
          return res.status(400).send(error.details[0].message);
       }
-
+      const { email, userName } = value;
+      //  check if email exist in the database
+      const findExistingEmail = await UserModel.findOne({ email })
+      if (findExistingEmail) {
+         return res.status(401).send('Email already exist')
+      }
+      //  check if username exist in the database
+      const findExistingUsername = await UserModel.findOne({ userName })
+      if (findExistingUsername) {
+         return res.status(401).send('Username already exist')
+      }
       // Hash password before saving
       value.password = await bcrypt.hash(value.password, 12);
 
@@ -45,7 +55,7 @@ export const signUp = async (req, res, next) => {
       await UserModel.create(value);
 
       // Return success response
-      return res.status(201).json({ message: 'User registration successful' });
+      return res.status(201).json('User registration successful');
    } catch (error) {
       next(error);
    }
@@ -95,7 +105,7 @@ export const portfolio = async (req, res, next) => {
 
       const user = await UserModel
          .findById(userId)
-         .select('-password') // Exclude password field from the user document
+         .select('-password -createdAt -updatedAt') // Exclude password field from the user document
 
          // Populate user profile, projects, skills, and volunteering details
          .populate({
@@ -120,8 +130,8 @@ export const portfolio = async (req, res, next) => {
          });
 
   // Ensure profile picture and resume URLs are populated correctly
-  console.log('Profile Picture URL:', user.userProfile.profilePicture);
-  console.log('Resume URL:', user.resume);
+//  console.log('Profile Picture URL:', user.userProfile.profilePicture);
+//   console.log('Resume URL:', user.resume);
 
       if (!user) {
          return res.status(404).json({ message: 'User not found' });
