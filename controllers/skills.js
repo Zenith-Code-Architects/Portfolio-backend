@@ -56,9 +56,21 @@ export const getAllUserSkills = async (req, res, next) => {
 
 export const updateSkills = async (req, res, next) => {
     try {
+        // Validate skill data
+        const { error, value } = skills_schema.validate(req.body);
+        if (error) {
+            return res.status(400).send(error.details[0].message);
+        }
+
+        // Get user ID from session
+        const userSessionId = req.session.user.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
         // Find skill by ID and update it
         const updatedSkill = await SkillsModel
-            .findByIdAndUpdate(req.params.id, req.body, { new: true });
+            .findByIdAndUpdate(req.params.id, value, { new: true });
 
         // Check if skill was found and updated
         if (!updatedSkill) {
@@ -66,7 +78,7 @@ export const updateSkills = async (req, res, next) => {
         }
 
         // Return updated skill in the response
-        res.status(200).json(updatedSkill);
+        res.status(200).json({ updatedSkill });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -76,6 +88,11 @@ export const updateSkills = async (req, res, next) => {
 
 export const deleteSkill = async (req, res, next) => {
     try {
+        const userSessionId = req.session.user.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
         // Delete skill by ID
         const deletedSkill = await SkillsModel.findByIdAndDelete(req.params.id);
 
@@ -85,14 +102,10 @@ export const deleteSkill = async (req, res, next) => {
         }
 
         // Remove skill ID from user's skills array
-        const user = await UserModel.findById(req.session.user.id);
-        if (user) {
-            user.skills = user.skills.filter(skillId => skillId.toString() !== req.params.id);
-            await user.save();
-        }
-
+        user.skills.pull(req.params.id);
+        await user.save();
         // Return success message in the response
-        res.status(200).json('Deleted');
+        res.status(200).json('Skill deleted');
     } catch (error) {
         // Pass error to error handling middleware
         next(error);

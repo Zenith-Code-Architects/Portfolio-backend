@@ -56,9 +56,23 @@ export const getAllUserVolunteering = async (req, res, next) => {
 
 export const updateVolunteering = async (req, res, next) => {
     try {
+        // Validate volunteering data
+        const { error, value } = volunteering_schema.validate(req.body);
+        if (error) {
+            return res.status(400).send(error.details[0].message);
+        }
+
+        // Get user ID from session
+        const userSessionId = req.session.user.id;
+
+        // Find the user by userSessionId
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).json('User not found');
+        }
         // Find volunteering record by ID and update it
         const updatedVolunteering = await VolunteeringModel
-            .findByIdAndUpdate(req.params.id, req.body, { new: true });
+            .findByIdAndUpdate(req.params.id, value, { new: true });
 
         // Check if volunteering record was found and updated
         if (!updatedVolunteering) {
@@ -66,7 +80,7 @@ export const updateVolunteering = async (req, res, next) => {
         }
 
         // Return updated volunteering record in the response
-        res.status(200).json(updatedVolunteering);
+        res.status(200).json({ updatedVolunteering });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -75,6 +89,12 @@ export const updateVolunteering = async (req, res, next) => {
 
 export const deleteVolunteering = async (req, res, next) => {
     try {
+        const userSessionId = req.session.user.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+
         // Delete volunteering record by ID
         const deletedVolunteering = await VolunteeringModel.findByIdAndDelete(req.params.id);
 
@@ -82,16 +102,11 @@ export const deleteVolunteering = async (req, res, next) => {
         if (!deletedVolunteering) {
             return res.status(404).json('Volunteering record not found');
         }
-
         // Remove volunteering record ID from user's volunteering array
-        const user = await UserModel.findById(req.session.user.id);
-        if (user) {
-            user.volunteering = user.volunteering.filter(volunteerId => volunteerId.toString() !== req.params.id);
-            await user.save();
-        }
-
+        user.volunteering.pull(req.params.id);
+        await user.save();
         // Return success message in the response
-        res.status(200).json('Deleted');
+        res.status(200).json('Volunteering record deleted');
     } catch (error) {
         // Pass error to error handling middleware
         next(error);

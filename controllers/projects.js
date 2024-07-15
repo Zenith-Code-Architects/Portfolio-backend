@@ -57,9 +57,20 @@ export const getAllUserProjects = async (req, res, next) => {
 
 export const updateProjects = async (req, res, next) => {
     try {
+        // validate
+        const { error, value } = project_schema.validate(req.body);
+        if (error) {
+            return res.status(400).send(error.details[0].message);
+        }
+
+        const userSessionId = req.session.user.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
         // Find project by ID and update it
         const updatedProject = await ProjectModel
-            .findByIdAndUpdate(req.params.id, req.body, { new: true });
+            .findByIdAndUpdate(req.params.id, value, { new: true });
 
         // Check if project was found and updated
         if (!updatedProject) {
@@ -67,7 +78,7 @@ export const updateProjects = async (req, res, next) => {
         }
 
         // Return updated project in the response
-        res.status(200).json(updatedProject);
+        res.status(200).json({ updatedProject });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -76,6 +87,11 @@ export const updateProjects = async (req, res, next) => {
 
 export const deleteProject = async (req, res, next) => {
     try {
+        const userSessionId = req.session.user.id
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).json("User not found")
+        }
         // Delete project by ID
         const deletedProject = await ProjectModel.findByIdAndDelete(req.params.id);
 
@@ -83,16 +99,11 @@ export const deleteProject = async (req, res, next) => {
         if (!deletedProject) {
             return res.status(404).json('Project not found');
         }
-
         // Remove project ID from user's projects array
-        const user = await UserModel.findById(req.session.user.id);
-        if (user) {
-            user.projects = user.projects.filter(projectId => projectId.toString() !== req.params.id);
-            await user.save();
-        }
-
+        user.projects.pull(req.params.id)
+        await user.save();
         // Return success message in the response
-        res.status(200).json('Deleted');
+        res.status(200).json('Project deleted');
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
