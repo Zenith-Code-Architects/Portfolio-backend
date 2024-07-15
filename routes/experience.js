@@ -3,12 +3,10 @@ import { Router } from "express";
 
 export const experienceRouter = Router();
 
-experienceRouter.post('/user/experiences', addExperience)
+experienceRouter.post('/experiences', addExperience)
 
-experienceRouter.get('/user/experiences', getExperience)
+experienceRouter.get('/experiences', getExperience)
 
-experienceRouter.get('/user/experiences/:id', getExperience)
+experienceRouter.patch('/experiences/:id', updateExperience)
 
-experienceRouter.patch('/user/experiences/:id', updateExperience)
-
-experienceRouter.delete('/user/experiences/:id', deleteExperience)
+experienceRouter.delete('/experiences/:id', deleteExperience)

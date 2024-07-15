@@ -1,15 +1,16 @@
 import { get } from "mongoose";
 import { addLicense, deleteLicense, getLicense, updateLicense, } from "../controllers/license_certification.js";
 import { Router } from "express";
+import { remoteUpload } from "../middleware/uploads.js";
 
 export const licenseRouter = Router();
 
-licenseRouter.post('/user/licenses', addLicense)
+licenseRouter.post('/licenses',remoteUpload.single('media'), addLicense)
 
-licenseRouter.get('/user/licenses', getLicense)
+licenseRouter.get('/licenses', getLicense)
 
-licenseRouter.get('/user/licenses/:id', getLicense)
+licenseRouter.get('/licenses/:id', getLicense)
 
-licenseRouter.patch('/user/licenses/:id', updateLicense)
+licenseRouter.patch('/licenses/:id',remoteUpload.single('media'), updateLicense)
 
-licenseRouter.delete('/user/licenses/:id', deleteLicense)
+licenseRouter.delete('/licenses/:id', deleteLicense)

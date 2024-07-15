@@ -3,12 +3,12 @@ import { Router } from "express";
 
 export const educationRouter = Router();
 
-educationRouter.post('/user/educations', addEducation)
+educationRouter.post('/educations', addEducation)
 
-educationRouter.get('/user/educations', getEducation)
+educationRouter.get('/educations', getEducation)
 
-educationRouter.get('/user/educations/:id', getEducation)
+educationRouter.get('/educations/:id', getEducation)
 
-educationRouter.patch('/user/educations/:id', updateEducation)
+educationRouter.patch('/educations/:id', updateEducation)
 
-educationRouter.delete('/user/educations/:id', deleteEducation)
+educationRouter.delete('/educations/:id', deleteEducation)

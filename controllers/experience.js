@@ -19,7 +19,7 @@ export const addExperience = async (req, res) => {
         //Create experience with the value
         const experience = await ExperienceModel.create({...value, user:userSessionId})
         //if you find the user, push the experience id you just created inside
-        user.experience.push(experience._id);
+        user.experiences.push(experience._id);
 
         //and save the user now with the experienceId
         await user.save();
@@ -66,6 +66,7 @@ export const updateExperience = async (req, res) => {
         if (!experience) {
             return res.status(404).send('Education not found');
         }
+        res.status(200).json({ experience })
     } catch (error) {
         res.status(500)
     }
@@ -82,7 +83,7 @@ export const deleteExperience = async (req, res) => {
         if (!experience) {
             return res.status(404).send('Education not found');
         }
-        user.experience.pull(req.params.id);
+        user.experiences.pull(req.params.id);
         await user.save();
         res.status(200).json("Experience deleted");
     } catch (error) {

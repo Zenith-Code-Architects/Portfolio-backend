@@ -18,9 +18,13 @@ export const addLicense = async (req, res) => {
             return res.status(404).send('User not found');
         }
         //Create license with the value
-        const license = await LicenseModel.create({ ...value, user: userSessionId })
+        const license = await LicenseModel.create({
+            ...value,
+            user: userSessionId,
+            media: req.file.filename
+        })
         //if you find the user, push the license id you just created inside
-        user.achievement.push(achievement._id);
+        user.licenseCertifications.push(license._id);
 
         //and save the user now with the licenseId
         await user.save();
@@ -48,7 +52,10 @@ export const getLicense = async (req, res, next) => {
 export const updateLicense = async (req, res) => {
 
     try {
-        const { error, value } = license_schema.validate(req.body)
+        const { error, value } = license_schema.validate({
+            ...req.body,
+            media: req.file.filename
+        })
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
@@ -59,12 +66,16 @@ export const updateLicense = async (req, res) => {
         }
         const license = await LicenseModel.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            {
+                ...req.body,
+                media: req.file.filename
+            },
             { new: true }
         )
-        if (!education) {
-            return res.status(404).send('Education not found');
+        if (!license) {
+            return res.status(404).send('license not found');
         }
+        res.status(200).json({ license })
     } catch (error) {
         res.status(500)
     }
@@ -75,15 +86,15 @@ export const deleteLicense = async (req, res) => {
         const idLicense = req.session.user.id
         const user = await UserModel.findById(idLicense);
         if (!user) {
-          return res.status(404).send("User not found");
+            return res.status(404).send("User not found");
         }
         const license = await LicenseModel.findByIdAndDelete(req.params.id)
         if (!license) {
-            return res.status(404).send('Education not found');
+            return res.status(404).send('License not found');
         }
-        user.license.pull(req.params.id);
+        user.licenseCertifications.pull(req.params.id);
         await user.save();
-      res.status(200).json("license deleted");
+        res.status(200).json("license deleted");
     } catch (error) {
         res.status(500)
     }

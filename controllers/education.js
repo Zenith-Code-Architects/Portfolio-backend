@@ -65,6 +65,7 @@ export const updateEducation = async (req, res) => {
         if (!education) {
             return res.status(404).send('Education not found');
         }
+        res.status(200).json({ education })
     } catch (error) {
         res.status(500)
     }
