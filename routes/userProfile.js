@@ -12,7 +12,7 @@ userProfileRouter.post('/profile', remoteUpload.fields([
     { name: 'resume', maxCount: 1 }
 ]), addUserProfile);
 
-userProfileRouter.get('/profile/:id', getUserProfile);
+userProfileRouter.get('/profile', getUserProfile);
 
 userProfileRouter.patch('/profile/:id', remoteUpload.fields([
     { name: 'profilePicture', maxCount: 1 },
