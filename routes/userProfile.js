@@ -1,4 +1,4 @@
-import { addUserProfile, deleteUserProfile, getUserProfile, updateUserProfile } from "../controllers/userProfile.js";
+import { addUserProfile, getUserProfile, updateUserProfile } from "../controllers/userProfile.js";
 import { Router } from "express";
 import { checkUserSession } from "../middleware/auth.js";
 import { remoteUpload } from "../middleware/uploads.js";
@@ -19,7 +19,7 @@ userProfileRouter.patch('/profile/:id', remoteUpload.fields([
     { name: 'resume', maxCount: 1 }
 ]), updateUserProfile);
 
-userProfileRouter.delete('/profile/:id', deleteUserProfile);
+// userProfileRouter.delete('/profile/:id', deleteUserProfile);
 
 // Export router
 export default userProfileRouter;

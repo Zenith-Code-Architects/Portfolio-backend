@@ -106,7 +106,7 @@ export const portfolio = async (req, res, next) => {
          .populate({
             path: 'projects',
             select: '-user -_id -__v -createdAt -updatedAt', // Exclude 'user' field from projects population
-            options: { lean: true }
+            options: { lean: true, sort: { startDate: -1 } }
          })
          .populate({
             path: 'skills',
@@ -116,7 +116,7 @@ export const portfolio = async (req, res, next) => {
          .populate({
             path: 'volunteering',
             select: '-user -_id -__v -createdAt -updatedAt', // Exclude 'user' field from volunteering population
-            options: { lean: true }
+            options: { lean: true, sort: { startDate: -1 } }
          });
 
       if (!user) {

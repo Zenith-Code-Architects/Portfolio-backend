@@ -73,19 +73,6 @@ export const updateSkills = async (req, res, next) => {
     }
 };
 
-// export const updateSkills = async (req, res, next) => {
-//     try {
-//         const updatedSkills = await SkillsModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-//         if (!updatedSkills) {
-//             return res.status(404).json({ error: 'Skills not found' });
-//         }
-//         res.status(200).json(updatedSkills);
-//     } catch (error) {
-//         console.error('Error updating skills:', error);
-//         next(error);
-//     }
-// }
-
 
 export const deleteSkill = async (req, res, next) => {
     try {

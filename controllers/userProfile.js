@@ -96,17 +96,17 @@ export const updateUserProfile = async (req, res, next) => {
 };
 
 // DELETE user profile
-export const deleteUserProfile = async (req, res, next) => {
-    try {
-        // Delete user profile by ID and user session ID
-        await UserProfileModel.findOneAndDelete({
-            _id: req.params.id,
-            user: req.session.user.id
-        });
+// export const deleteUserProfile = async (req, res, next) => {
+//     try {
+//         // Delete user profile by ID and user session ID
+//         await UserProfileModel.findOneAndDelete({
+//             _id: req.params.id,
+//             user: req.session.user.id
+//         });
 
-        // Return response
-        res.status(200).json('User profile deleted');
-    } catch (error) {
-        next(error);
-    }
-};
+//         // Return response
+//         res.status(200).json('User profile deleted');
+//     } catch (error) {
+//         next(error);
+//     }
+// };
