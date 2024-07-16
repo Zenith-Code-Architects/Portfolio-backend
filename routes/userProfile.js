@@ -1,4 +1,4 @@
-import { addUserProfile, deleteUserProfile, getUserProfile, updateUserProfile } from "../controllers/userProfile.js";
+import { addUserProfile, getUserProfile, updateUserProfile } from "../controllers/userProfile.js";
 import { Router } from "express";
 import { checkUserSession } from "../middleware/auth.js";
 import { remoteUpload } from "../middleware/uploads.js";
@@ -10,16 +10,16 @@ const userProfileRouter = Router();
 userProfileRouter.post('/profile', remoteUpload.fields([
     { name: 'profilePicture', maxCount: 1 },
     { name: 'resume', maxCount: 1 }
-]), addUserProfile);
+]), checkUserSession, addUserProfile);
 
-userProfileRouter.get('/profile/:id', getUserProfile);
+userProfileRouter.get('/profile', getUserProfile);
 
 userProfileRouter.patch('/profile/:id', remoteUpload.fields([
     { name: 'profilePicture', maxCount: 1 },
     { name: 'resume', maxCount: 1 }
-]), updateUserProfile);
+]), checkUserSession, updateUserProfile);
 
-userProfileRouter.delete('/profile/:id', deleteUserProfile);
+// userProfileRouter.delete('/profile/:id', deleteUserProfile);
 
 // Export router
 export default userProfileRouter;
