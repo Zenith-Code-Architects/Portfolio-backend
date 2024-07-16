@@ -95,22 +95,24 @@ export const portfolio = async (req, res, next) => {
 
       const user = await UserModel
          .findOne({ userName })
-         .select('-password -createdAt -updatedAt') // Exclude password field from the user document
+         // Exclude password field from the user document
+         .select('-password -createdAt -updatedAt') 
 
          // Populate user profile, projects, skills, and volunteering details
          .populate({
             path: 'userProfile',
-            select: '-user -_id -__v -createdAt -updatedAt', // Exclude 'user' field from userProfile population
-            options: { lean: true } // Return Mongoose documents as plain JavaScript objects
+            select: '-user -_id -__v -createdAt -updatedAt',
+            // Return Mongoose documents as plain JavaScript objects
+            options: { lean: true } 
          })
          .populate({
             path: 'projects',
-            select: '-user -_id -__v -createdAt -updatedAt', // Exclude 'user' field from projects population
+            select: '-user -_id -__v -createdAt -updatedAt', 
             options: { lean: true, sort: { startDate: -1 } }
          })
          .populate({
             path: 'skills',
-            select: '-user -_id -__v -createdAt -updatedAt', // Exclude 'user' field from skills population
+            select: '-user -_id -__v -createdAt -updatedAt',
             options: { lean: true }
          })
          .populate({
@@ -120,11 +122,10 @@ export const portfolio = async (req, res, next) => {
          });
 
       if (!user) {
-         return res.status(404).json({ message: 'User not found' });
+         return res.status(404).json('User not found');
       }
-
       // Return the complete user portfolio
-      res.status(200).json({ user: userDetails });
+      res.status(200).json({ user });
    } catch (error) {
       next(error);
    }

@@ -14,7 +14,7 @@ userRouter.post('/auth/login', login);
 
 userRouter.post('/auth/logout', checkUserSession, logout);
 
-userRouter.get('/portfolio/auth/:userName', portfolio)
+userRouter.get('/portfolio/:userName', portfolio)
 
 // export router
 export default userRouter 
