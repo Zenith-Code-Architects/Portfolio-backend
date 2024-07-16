@@ -9,8 +9,8 @@ export const addLicense = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        console.log('userId', req.session.user.id)
-        const userSessionId = req.session.user.id
+        // console.log('userId', req.session.user.id)
+        const userSessionId = req.session?.user?.id || req?.user?.id;
 
         //after, find the user with the id that you passed when creating the education 
         const user = await UserModel.findById(userSessionId);
@@ -37,7 +37,7 @@ export const addLicense = async (req, res) => {
 export const getLicense = async (req, res, next) => {
     try {
         //we are fetching license that belongs to a particular user
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const allLicense = await LicenseModel.find({ user: userSessionId })
         if (allLicense.length == 0) {
             return res.status(400).send('No license provided')
@@ -59,7 +59,7 @@ export const updateLicense = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(userSessionId);
         if (!user) {
             return res.status(404).send('User not found');
@@ -83,7 +83,7 @@ export const updateLicense = async (req, res) => {
 
 export const deleteLicense = async (req, res) => {
     try {
-        const idLicense = req.session.user.id
+        const idLicense = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(idLicense);
         if (!user) {
             return res.status(404).send("User not found");

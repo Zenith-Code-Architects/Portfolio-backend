@@ -11,7 +11,7 @@ export const addSkill = async (req, res) => {
         }
 
         // Get user ID from session
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
 
         // Find the user by userSessionId
         const user = await UserModel.findById(userSessionId);
@@ -38,7 +38,7 @@ export const addSkill = async (req, res) => {
 export const getAllUserSkills = async (req, res, next) => {
     try {
         // Get user ID from session
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
 
         // Find all skills belonging to the user
         const allUserSkills = await SkillsModel.find({ user: userSessionId });
@@ -63,7 +63,7 @@ export const updateSkills = async (req, res, next) => {
         }
 
         // Get user ID from session
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(userSessionId);
         if (!user) {
             return res.status(404).send("User not found");
@@ -88,7 +88,7 @@ export const updateSkills = async (req, res, next) => {
 
 export const deleteSkill = async (req, res, next) => {
     try {
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(userSessionId);
         if (!user) {
             return res.status(404).send("User not found");
