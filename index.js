@@ -20,7 +20,7 @@ import { restartServer } from './restartServer.js';
 const portfolioapp = express();
 expressOasGenerator.handleResponses(portfolioapp, {
     alwaysServeDocs: true,
-    tags: ['profile', 'skills', 'projects', 'volunteering', 'auth'],
+    tags: ['profile', 'skills', 'projects', 'volunteering', 'auth', 'achievements', 'educations', 'experiences', 'licenses'],
     mongooseModels: mongoose.modelNames(),
 })
 
