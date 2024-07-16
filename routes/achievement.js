@@ -7,9 +7,9 @@ export const achievementRouter = Router();
 
 achievementRouter.post('/achievements',remoteUpload.single('image'),checkUserSession, addAchievements)
 
-achievementRouter.get('/achievements', getAchievements)
+achievementRouter.get('/achievements',checkUserSession, getAchievements)
 
-achievementRouter.patch('/achievements/:id',remoteUpload.single('image'), updateAchievements)
+achievementRouter.patch('/achievements/:id',remoteUpload.single('image'),checkUserSession, updateAchievements)
 
 achievementRouter.delete('/achievements/:id',checkUserSession, deleteAchievements)
 

@@ -7,8 +7,8 @@ export const licenseRouter = Router();
 
 licenseRouter.post('/licenses',remoteUpload.single('media'),checkUserSession, addLicense)
 
-licenseRouter.get('/licenses', getLicense)
+licenseRouter.get('/licenses',checkUserSession, getLicense)
 
-licenseRouter.patch('/licenses/:id',remoteUpload.single('media'), updateLicense)
+licenseRouter.patch('/licenses/:id',remoteUpload.single('media'),checkUserSession, updateLicense)
 
 licenseRouter.delete('/licenses/:id',checkUserSession, deleteLicense)

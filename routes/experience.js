@@ -6,8 +6,8 @@ export const experienceRouter = Router();
 
 experienceRouter.post('/experiences',checkUserSession, addExperience)
 
-experienceRouter.get('/experiences', getExperience)
+experienceRouter.get('/experiences',checkUserSession, getExperience)
 
-experienceRouter.patch('/experiences/:id', updateExperience)
+experienceRouter.patch('/experiences/:id',checkUserSession, updateExperience)
 
 experienceRouter.delete('/experiences/:id',checkUserSession, deleteExperience)

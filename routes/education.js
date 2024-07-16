@@ -6,8 +6,8 @@ export const educationRouter = Router();
 
 educationRouter.post('/educations',checkUserSession, addEducation)
 
-educationRouter.get('/educations', getEducation)
+educationRouter.get('/educations',checkUserSession, getEducation)
 
-educationRouter.patch('/educations/:id', updateEducation)
+educationRouter.patch('/educations/:id',checkUserSession, updateEducation)
 
 educationRouter.delete('/educations/:id',checkUserSession, deleteEducation)
