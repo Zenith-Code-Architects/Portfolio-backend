@@ -9,6 +9,10 @@ import userProfileRouter from './routes/userProfile.js';
 import skillRouter from './routes/skills.js';
 import volunteeringRouter from './routes/volunteering.js';
 import projectRouter from './routes/projects.js';
+import { licenseRouter } from './routes/license_certification.js';
+import { achievementRouter } from './routes/achievement.js';
+import { educationRouter } from './routes/education.js';
+import { experienceRouter } from './routes/experience.js';
 import mongoose from 'mongoose';
 import { restartServer } from './restartServer.js';
 
@@ -31,7 +35,7 @@ portfolioapp.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.CONNECT_STRING
     })
-})); 
+}));
 
 portfolioapp.get("/api/v1/portfoliohealth", (req, res) => {
     res.json({ status: "UP" });
@@ -44,6 +48,11 @@ portfolioapp.use('/api/v1', userProfileRouter)
 portfolioapp.use('/api/v1', skillRouter)
 portfolioapp.use('/api/v1', volunteeringRouter)
 portfolioapp.use('/api/v1', projectRouter)
+portfolioapp.use('/api/v1', licenseRouter)
+portfolioapp.use('/api/v1', achievementRouter)
+portfolioapp.use('/api/v1', educationRouter)
+portfolioapp.use('/api/v1', experienceRouter)
+
 expressOasGenerator.handleRequests();
 portfolioapp.use((req, res) => res.redirect('/api-docs/'));
 
