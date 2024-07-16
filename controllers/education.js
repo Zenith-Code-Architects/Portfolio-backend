@@ -10,7 +10,7 @@ export const addEducation = async (req, res) => {
             return res.status(400).send(error.details[0].message)
         }
         console.log('userId', req.session.user.id)
-        const userSessionId = req.session.user.id
+        const userSessionId = req.session?.user?.id || req?.user?.id;
        
         //after, find the user with the id that you passed when creating the education 
         const user = await UserModel.findById(userSessionId);
@@ -33,7 +33,7 @@ export const addEducation = async (req, res) => {
 export const getEducation = async (req, res, next) => {
     try {
         //we are fetching education that belongs to a particular user
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const allEducation = await EducationModel.find({ user: userSessionId })
         if (allEducation.length == 0) {
             return res.status(400).send('No education provided')
@@ -52,7 +52,7 @@ export const updateEducation = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(userSessionId);
         if (!user) {
             return res.status(404).send('User not found');
@@ -73,7 +73,7 @@ export const updateEducation = async (req, res) => {
 
 export const deleteEducation = async (req, res) => {
     try {
-        const idEducation = req.session.user.id
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(idEducation);
         if (!user) {
           return res.status(404).send("User not found");

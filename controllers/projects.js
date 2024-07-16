@@ -11,7 +11,7 @@ export const addProject = async (req, res) => {
         }
 
         // Get user ID from session
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
 
         // Find the user by userSessionId
         const user = await UserModel.findById(userSessionId);
@@ -38,7 +38,7 @@ export const addProject = async (req, res) => {
 export const getAllUserProjects = async (req, res, next) => {
     try {
         // Get user ID from session
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
 
         // Find all projects belonging to the user
         const allUserProjects = await ProjectModel.find({ user: userSessionId });
@@ -63,7 +63,7 @@ export const updateProjects = async (req, res, next) => {
             return res.status(400).send(error.details[0].message);
         }
 
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(userSessionId);
         if (!user) {
             return res.status(404).send("User not found");
@@ -87,7 +87,7 @@ export const updateProjects = async (req, res, next) => {
 
 export const deleteProject = async (req, res, next) => {
     try {
-        const userSessionId = req.session.user.id
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(userSessionId);
         if (!user) {
             return res.status(404).json("User not found")
