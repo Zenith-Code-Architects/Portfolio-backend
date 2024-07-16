@@ -111,6 +111,26 @@ export const portfolio = async (req, res, next) => {
             options: { lean: true, sort: { startDate: -1 } }
          })
          .populate({
+            path: 'achievements',
+            select: '-user -_id -__v -createdAt -updatedAt', 
+            options: { lean: true, sort: { startDate: -1 } }
+         })
+         .populate({
+            path: 'education',
+            select: '-user -_id -__v -createdAt -updatedAt', 
+            options: { lean: true, sort: { startDate: -1 } }
+         })
+         .populate({
+            path: 'experiences',
+            select: '-user -_id -__v -createdAt -updatedAt', 
+            options: { lean: true, sort: { startDate: -1 } }
+         })
+         .populate({
+            path: 'licenseCertifications',
+            select: '-user -_id -__v -createdAt -updatedAt', 
+            options: { lean: true, sort: { startDate: -1 } }
+         })
+         .populate({
             path: 'skills',
             select: '-user -_id -__v -createdAt -updatedAt',
             options: { lean: true }
