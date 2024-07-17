@@ -8,15 +8,15 @@ const userRouter = Router();
 // Define routes
 userRouter.get('/user', getUsers );
 
-userRouter.post('/auth/signup', signUp);
+userRouter.post('/user/auth/signup', signUp);
 
-userRouter.post('/auth/login', login);
+userRouter.post('/user/auth/session/login', login);
 
-userRouter.post('/auth/token', token);
+userRouter.post('/user/auth/token/login', token);
 
-userRouter.post('/auth/logout', checkUserSession, logout);
+userRouter.post('/user/auth/logout', checkUserSession, logout);
 
-userRouter.get('/portfolio/:userName', portfolio)
+userRouter.get('/user/portfolio/:userName', portfolio)
 
 // export router
 export default userRouter 
