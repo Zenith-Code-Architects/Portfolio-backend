@@ -45,6 +45,26 @@ export const getEducation = async (req, res, next) => {
     }
 }
 
+export const getOneEducation = async (req, res, next) => {
+    try {
+        const educationId = req.params.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        //we are fetching education that belongs to a particular user
+        const oneEducation = await EducationModel.findById(educationId)
+        if (oneEducation.length == 0) {
+            return res.status(400).send('No education provided')
+        }
+        res.status(200).json(oneEducation)
+
+    } catch (error) {
+        next(error)
+    }
+}
+
 export const updateEducation = async (req, res) => {
 
     try {

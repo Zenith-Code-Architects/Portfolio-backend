@@ -49,6 +49,26 @@ export const getLicense = async (req, res, next) => {
     }
 }
 
+export const getOneLicense = async (req, res, next) => {
+    try {
+        const licenseId = req.params.id
+        //we are fetching license that belongs to a particular user
+        const userSessionId = req.session?.user?.id || req?.user?.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        const oneLicense = await LicenseModel.findById(licenseId)
+        if (oneLicense.length == 0) {
+            return res.status(400).send('No license provided')
+        }
+        res.status(200).json(licenseId) 
+
+    } catch (error) {
+        next(error)
+    }
+}
+
 export const updateLicense = async (req, res) => {
 
     try {
