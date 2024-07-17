@@ -73,7 +73,7 @@ export const updateEducation = async (req, res) => {
 
 export const deleteEducation = async (req, res) => {
     try {
-        const userSessionId = req.session?.user?.id || req?.user?.id;
+        const idEducation = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(idEducation);
         if (!user) {
           return res.status(404).send("User not found");

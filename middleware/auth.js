@@ -15,6 +15,6 @@ export const checkUserSession = (req, res, next) => {
         res.status(401).json(error)
        }
     } else {
-        res.status(401).json('No user session')
+        res.status(401).json('User not Authenticated')
     }
 }

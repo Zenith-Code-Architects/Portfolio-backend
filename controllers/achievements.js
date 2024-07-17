@@ -89,7 +89,7 @@ export const updateAchievements = async (req, res, next) => {
 
 export const deleteAchievements = async (req, res) => {
     try {
-        const userSessionId = req.session?.user?.id || req?.user?.id;
+        const idAchievement = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(idAchievement);
         if (!user) {
             return res.status(404).send("User not found");

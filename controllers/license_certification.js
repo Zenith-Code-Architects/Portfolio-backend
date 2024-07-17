@@ -83,7 +83,7 @@ export const updateLicense = async (req, res) => {
 
 export const deleteLicense = async (req, res) => {
     try {
-        const userSessionId = req.session?.user?.id || req?.user?.id;
+        const idLicense = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(idLicense);
         if (!user) {
             return res.status(404).send("User not found");

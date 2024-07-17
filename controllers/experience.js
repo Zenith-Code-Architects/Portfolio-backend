@@ -74,7 +74,7 @@ export const updateExperience = async (req, res) => {
 
 export const deleteExperience = async (req, res) => {
     try {
-        const userSessionId = req.session?.user?.id || req?.user?.id;
+        const idExperience = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(idExperience);
         if (!user) {
             return res.status(404).send("User not found");
