@@ -11,7 +11,7 @@ export const addVolunteering = async (req, res) => {
         }
 
         // Get user ID from session
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
 
         // Find the user by userSessionId
         const user = await UserModel.findById(userSessionId);
@@ -38,7 +38,7 @@ export const addVolunteering = async (req, res) => {
 export const getAllUserVolunteering = async (req, res, next) => {
     try {
         // Get user ID from session
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
 
         // Find all volunteering records belonging to the user
         const allUserVolunteering = await VolunteeringModel.find({ user: userSessionId });
@@ -63,7 +63,7 @@ export const updateVolunteering = async (req, res, next) => {
         }
 
         // Get user ID from session
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
 
         // Find the user by userSessionId
         const user = await UserModel.findById(userSessionId);
@@ -89,7 +89,7 @@ export const updateVolunteering = async (req, res, next) => {
 
 export const deleteVolunteering = async (req, res, next) => {
     try {
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(userSessionId);
         if (!user) {
             return res.status(404).send("User not found");

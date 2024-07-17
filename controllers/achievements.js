@@ -12,7 +12,7 @@ export const addAchievements = async (req, res) => {
             return res.status(400).send(error.details[0].message)
         }
         console.log('userId', req.session.user.id)
-        const userSessionId = req.session.user.id
+        const userSessionId = req.session?.user?.id || req?.user?.id;
 
         //after, find the user with the id that you passed when creating the achievement 
         const user = await UserModel.findById(userSessionId);
@@ -41,7 +41,7 @@ export const addAchievements = async (req, res) => {
 export const getAchievements = async (req, res, next) => {
 
     try {
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const allAchievement = await AchievementModel.find({ user: userSessionId })
         if (allAchievement.length == 0) {
             return res.status(400).send('No achievement provided')
@@ -62,7 +62,7 @@ export const updateAchievements = async (req, res, next) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        const userSessionId = req.session.user.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(userSessionId);
         if (!user) {
             return res.status(404).send('User not found');
@@ -89,7 +89,7 @@ export const updateAchievements = async (req, res, next) => {
 
 export const deleteAchievements = async (req, res) => {
     try {
-        const idAchievement = req.session.user.id
+        const idAchievement = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(idAchievement);
         if (!user) {
             return res.status(404).send("User not found");
