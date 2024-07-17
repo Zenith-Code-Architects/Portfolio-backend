@@ -8,6 +8,8 @@ const skillsSchema = new Schema({
 }, {
     timestamps: true
 })
+// Ensure unique skillName per user
+skillsSchema.index({ user: 1, name: 1 }, { unique: true });
 
 skillsSchema.plugin(toJSON)
 

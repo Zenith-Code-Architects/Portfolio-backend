@@ -1,4 +1,4 @@
-import { addProject, deleteProject, getAllUserProjects, updateProjects } from "../controllers/projects.js";
+import { addProject, deleteProject, getAllUserProjects, getProjectById, updateProjects } from "../controllers/projects.js";
 import { Router } from "express";
 import { checkUserSession } from "../middleware/auth.js";
 
@@ -9,6 +9,8 @@ const projectRouter = Router();
 projectRouter.post('/projects', checkUserSession, addProject); // POST /projects
 
 projectRouter.get('/projects', checkUserSession, getAllUserProjects); // GET /projects
+
+projectRouter.get('/projects/:id', checkUserSession, getProjectById); // GET /project
 
 projectRouter.patch('/projects/:id', checkUserSession, updateProjects); // PATCH /projects/:id
 

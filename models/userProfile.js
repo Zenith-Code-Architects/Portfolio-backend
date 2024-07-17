@@ -2,7 +2,7 @@ import { model, Schema, Types } from "mongoose";
 import { toJSON } from '@reis/mongoose-to-json';
 
 const userProfileSchema = new Schema({
-    user: { type: Types.ObjectId, ref: 'User', required: true },
+    user: { type: Types.ObjectId, ref: 'User', required: true, unique: true },
     profilePicture: { type: String },
     location: { type: String },
     maritalStatus: { type: String, enum: ['single', 'married', 'prefer-not-to-say'] },
