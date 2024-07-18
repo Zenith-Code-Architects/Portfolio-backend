@@ -18,6 +18,12 @@ export const addSkill = async (req, res) => {
         if (!user) {
             return res.status(404).json('User not found');
         }
+        // 
+        const {name} = req.body;
+        const existingSkill = await SkillsModel.findOne({name: name}, {user: userSessionId});
+        if(existingSkill) {
+            return res.status(409).json('This skill already exists for this user')
+        }
 
         // Create new skill and associate it with the user
         const skill = await SkillsModel.create({ ...value, user: userSessionId });
