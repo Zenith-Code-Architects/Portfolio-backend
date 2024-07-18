@@ -52,6 +52,26 @@ export const getAchievements = async (req, res, next) => {
     }
 }
 
+//Get one achievement
+export const getOneAchievements = async (req, res, next) => {
+
+    try {
+        const achievementId = req.params.id
+        const userSessionId = req.session?.user?.id || req?.user?.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        const oneAchievement = await AchievementModel.findById(achievementId)
+        if (oneAchievement.length == 0) {
+            return res.status(400).send('No achievement provided')
+        }
+        res.status(200).json(oneAchievement)
+    } catch (error) {
+        next(error)
+    }
+}
+
 export const updateAchievements = async (req, res, next) => {
     try {
         const { error, value } = achievement_schema.validate({

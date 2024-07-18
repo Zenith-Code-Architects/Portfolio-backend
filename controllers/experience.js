@@ -45,6 +45,26 @@ export const getExperience = async (req, res, next) => {
         next(error)
     }
 }
+//Get one item
+export const getOneExperience = async (req, res, next) => {
+    try {
+        const experienceId = req.params.id
+        const userSessionId = req.session?.user?.id || req?.user?.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        //Get filtered  experience from database
+        const oneExperience = await ExperienceModel.findById(experienceId)
+        if (oneExperience.length == 0) {
+            return res.status(400).send('No experiences provided')
+        }
+        res.status(200).json(experienceId)
+
+    } catch (error) {
+        next(error)
+    }
+}
 
 export const updateExperience = async (req, res) => {
 
