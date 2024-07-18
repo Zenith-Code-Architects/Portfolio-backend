@@ -104,7 +104,7 @@ export const token = async (req, res, next) => {
          return res.status(401).json('Invalid login details')
       }
       // Create a token 
-      const token = jwt.sign({id: user.id}, process.env.JWT_PRIVATE_KEY, {expiresIn: '1h'});
+      const token = jwt.sign({id: user.id}, process.env.JWT_PRIVATE_KEY, {expiresIn: '72h'});
       // Return response
       res.status(201).json({
          mesage: 'User logged in',
