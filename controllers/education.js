@@ -9,7 +9,6 @@ export const addEducation = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        // console.log('userId', req.session.user.id)
         const userSessionId = req.session?.user?.id || req?.user?.id;
        
         //after, find the user with the id that you passed when creating the education 
@@ -39,6 +38,26 @@ export const getEducation = async (req, res, next) => {
             return res.status(400).send('No education provided')
         }
         res.status(200).json({ education: allEducation })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getOneEducation = async (req, res, next) => {
+    try {
+        const educationId = req.params.id;
+        const userSessionId = req.session?.user?.id || req?.user?.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        //we are fetching education that belongs to a particular user
+        const oneEducation = await EducationModel.findById(educationId)
+        if (oneEducation.length == 0) {
+            return res.status(400).send('No education provided')
+        }
+        res.status(200).json(oneEducation)
 
     } catch (error) {
         next(error)

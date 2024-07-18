@@ -9,7 +9,6 @@ export const addExperience = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        // console.log('userId', req.session.user.id)
         const userSessionId = req.session?.user?.id || req?.user?.id;
         //after, find the user with the id that you passed when creating the education 
         const user = await UserModel.findById(userSessionId);
@@ -40,6 +39,26 @@ export const getExperience = async (req, res, next) => {
             return res.status(400).send('No experiences provided')
         }
         res.status(200).json({ experience: allExperience })
+
+    } catch (error) {
+        next(error)
+    }
+}
+//Get one item
+export const getOneExperience = async (req, res, next) => {
+    try {
+        const experienceId = req.params.id
+        const userSessionId = req.session?.user?.id || req?.user?.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        //Get filtered  experience from database
+        const oneExperience = await ExperienceModel.findById(experienceId)
+        if (oneExperience.length == 0) {
+            return res.status(400).send('No experiences provided')
+        }
+        res.status(200).json(experienceId)
 
     } catch (error) {
         next(error)

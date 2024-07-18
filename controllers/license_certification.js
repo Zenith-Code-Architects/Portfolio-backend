@@ -9,7 +9,6 @@ export const addLicense = async (req, res) => {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        // console.log('userId', req.session.user.id)
         const userSessionId = req.session?.user?.id || req?.user?.id;
 
         //after, find the user with the id that you passed when creating the education 
@@ -43,6 +42,26 @@ export const getLicense = async (req, res, next) => {
             return res.status(400).send('No license provided')
         }
         res.status(200).json({ license: allLicense })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getOneLicense = async (req, res, next) => {
+    try {
+        const licenseId = req.params.id
+        //we are fetching license that belongs to a particular user
+        const userSessionId = req.session?.user?.id || req?.user?.id;
+        const user = await UserModel.findById(userSessionId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        const oneLicense = await LicenseModel.findById(licenseId)
+        if (oneLicense.length == 0) {
+            return res.status(400).send('No license provided')
+        }
+        res.status(200).json(licenseId) 
 
     } catch (error) {
         next(error)

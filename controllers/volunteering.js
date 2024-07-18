@@ -11,6 +11,7 @@ export const addVolunteering = async (req, res) => {
         }
 
         // Get user ID from session or request(token)
+        
         const userSessionId = req.session?.user?.id || req?.user?.id;
 
         // Find the user by userSessionId
