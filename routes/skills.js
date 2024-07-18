@@ -1,4 +1,4 @@
-import { addSkill, deleteSkill, getAllUserSkills, updateSkills } from "../controllers/skills.js";
+import { addSkill, deleteSkill, getAllUserSkills, getSkillById, updateSkills } from "../controllers/skills.js";
 import { Router } from "express";
 import { checkUserSession } from "../middleware/auth.js";
 
@@ -8,6 +8,8 @@ const skillRouter = Router();
 skillRouter.post('/skills', checkUserSession, addSkill)
 
 skillRouter.get('/skills', checkUserSession, getAllUserSkills)
+
+skillRouter.get('/skills/:id', checkUserSession, getSkillById)
 
 skillRouter.patch('/skills/:id', checkUserSession, updateSkills)
 

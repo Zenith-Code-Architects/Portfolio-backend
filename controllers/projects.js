@@ -54,6 +54,27 @@ export const getAllUserProjects = async (req, res, next) => {
     }
 };
 
+export const getProjectById = async (req, res, next) => {
+    try {
+        // Get user ID from session
+        const userSessionId = req.session?.user?.id || req?.user?.id;
+
+        // Find project by ID and user
+        const project = await ProjectModel.findById(req.params.id);
+
+        // Check if project exists and belongs to the user
+        if (!project || project.user.toString() !== userSessionId.toString()) {
+            return res.status(404).json('Project not found');
+        }
+
+        // Return the project in the response
+        res.status(200).json({ project });
+    } catch (error) {
+        // Pass error to error handling middleware
+        next(error);
+    }
+};
+
 
 export const updateProjects = async (req, res, next) => {
     try {
