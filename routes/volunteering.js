@@ -6,15 +6,15 @@ import { checkUserSession } from "../middleware/auth.js";
 const volunteeringRouter = Router();
 
 // define routes
-volunteeringRouter.post('/volunteering', checkUserSession, addVolunteering)
+volunteeringRouter.post('/user/volunteering', checkUserSession, addVolunteering)
 
-volunteeringRouter.get('/volunteering', checkUserSession, getAllUserVolunteering)
+volunteeringRouter.get('/user/volunteering', checkUserSession, getAllUserVolunteering)
 
-volunteeringRouter.get('/volunteering/:id', checkUserSession, getVolunteeringById)
+volunteeringRouter.get('/user/volunteering/:id', checkUserSession, getVolunteeringById)
 
-volunteeringRouter.patch('/volunteering/:id', checkUserSession, updateVolunteering)
+volunteeringRouter.patch('/user/volunteering/:id', checkUserSession, updateVolunteering)
 
-volunteeringRouter.delete('/volunteering/:id', checkUserSession, deleteVolunteering)
+volunteeringRouter.delete('/user/volunteering/:id', checkUserSession, deleteVolunteering)
 
 // export router
 export default volunteeringRouter

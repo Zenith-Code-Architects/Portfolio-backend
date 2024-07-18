@@ -5,12 +5,12 @@ import { checkUserSession } from "../middleware/auth.js";
 
 export const licenseRouter = Router();
 
-licenseRouter.post('/licenses',remoteUpload.single('media'),checkUserSession, addLicense)
+licenseRouter.post('/user/licenses',remoteUpload.single('media'),checkUserSession, addLicense)
 
-licenseRouter.get('/licenses',checkUserSession, getLicense)
+licenseRouter.get('/user/licenses',checkUserSession, getLicense)
 
-licenseRouter.get('/licenses/:id',checkUserSession, getOneLicense)
+licenseRouter.get('/user/licenses/:id',checkUserSession, getOneLicense)
 
-licenseRouter.patch('/licenses/:id',remoteUpload.single('media'),checkUserSession, updateLicense)
+licenseRouter.patch('/user/licenses/:id',remoteUpload.single('media'),checkUserSession, updateLicense)
 
-licenseRouter.delete('/licenses/:id',checkUserSession, deleteLicense)
+licenseRouter.delete('/user/licenses/:id',checkUserSession, deleteLicense)

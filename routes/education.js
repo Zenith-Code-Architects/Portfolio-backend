@@ -4,12 +4,12 @@ import { checkUserSession } from "../middleware/auth.js";
 
 export const educationRouter = Router();
 
-educationRouter.post('/educations',checkUserSession, addEducation)
+educationRouter.post('/user/educations',checkUserSession, addEducation)
 
-educationRouter.get('/educations',checkUserSession, getEducation)
+educationRouter.get('/user/educations',checkUserSession, getEducation)
 
-educationRouter.get('/educations/:id',checkUserSession, getOneEducation)
+educationRouter.get('/user/educations/:id',checkUserSession, getOneEducation)
 
-educationRouter.patch('/educations/:id',checkUserSession, updateEducation)
+educationRouter.patch('/user/educations/:id',checkUserSession, updateEducation)
 
-educationRouter.delete('/educations/:id',checkUserSession, deleteEducation)
+educationRouter.delete('/user/educations/:id',checkUserSession, deleteEducation)

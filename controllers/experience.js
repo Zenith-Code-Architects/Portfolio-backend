@@ -23,7 +23,9 @@ export const addExperience = async (req, res, next) => {
         //and save the user now with the experienceId
         await user.save();
         //Return the experience
-        res.status(201).json({ experience })
+        res.status(201).json({ 
+            message: 'Experience added',
+            experience })
     } catch (error) {
         next(error)
     }
@@ -35,10 +37,12 @@ export const getExperience = async (req, res, next) => {
         //Get filtered  experience from database
 
         const allExperience = await ExperienceModel.find({ user: userSessionId  })
-        if (allExperience.length == 0) {
-            return res.status(200).json(allExperience);
-        }
-        res.status(200).json({ experience: allExperience })
+        // if (allExperience.length == 0) {
+        //     return res.status(200).json(allExperience);
+        // }
+        res.status(200).json({ 
+            message: 'Experiences retrieved',
+            experience: allExperience })
 
     } catch (error) {
         next(error)
@@ -58,7 +62,7 @@ export const getOneExperience = async (req, res, next) => {
         if (oneExperience.length == 0) {
             return res.status(200).json(oneExperience);
         }
-        res.status(200).json(experienceId)
+        res.status(200).json({message:'Experience retrieved', experienceId})
 
     } catch (error) {
         next(error)
@@ -85,7 +89,7 @@ export const updateExperience = async (req, res, next) => {
         if (!experience) {
             return res.status(404).send('Education not found');
         }
-        res.status(200).json({ experience })
+        res.status(200).json({message: 'Update successful', experience })
     } catch (error) {
         next(error)
     }
@@ -104,7 +108,7 @@ export const deleteExperience = async (req, res, next) => {
         }
         user.experiences.pull(req.params.id);
         await user.save();
-        res.status(200).json("Experience deleted");
+        res.status(200).json({message:"Experience deleted", deleteExperience});
     } catch (error) {
         next(error)
     }

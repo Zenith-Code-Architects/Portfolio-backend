@@ -4,12 +4,12 @@ import { checkUserSession } from "../middleware/auth.js";
 
 export const experienceRouter = Router();
 
-experienceRouter.post('/experiences',checkUserSession, addExperience)
+experienceRouter.post('/user/experiences',checkUserSession, addExperience)
 
-experienceRouter.get('/experiences',checkUserSession, getExperience)
+experienceRouter.get('/user/experiences',checkUserSession, getExperience)
 
-experienceRouter.get('/experiences/:id',checkUserSession, getOneExperience)
+experienceRouter.get('/user/experiences/:id',checkUserSession, getOneExperience)
 
-experienceRouter.patch('/experiences/:id',checkUserSession, updateExperience)
+experienceRouter.patch('/user/experiences/:id',checkUserSession, updateExperience)
 
-experienceRouter.delete('/experiences/:id',checkUserSession, deleteExperience)
+experienceRouter.delete('/user/experiences/:id',checkUserSession, deleteExperience)

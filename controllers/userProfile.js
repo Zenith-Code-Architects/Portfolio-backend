@@ -32,7 +32,9 @@ export const addUserProfile = async (req, res, next) => {
         await user.save();
 
         // Return response
-        res.status(201).json({ userProfile });
+        res.status(201).json({ 
+            message: 'User profile created',
+            userProfile });
     } catch (error) {
         if (error.code === 11000 && error.keyPattern && error.keyPattern.user === 1) {
             return res.status(400).json('User profile already exists');
@@ -101,7 +103,9 @@ export const getUserProfile = async (req, res, next) => {
             return res.status(404).json('No profile added');
         }
         // Return response
-        res.status(200).json({ userProfile });
+        res.status(200).json({ 
+            message: 'User profile retrieved',
+            userProfile });
     } catch (error) {
         next(error);
     }
@@ -137,7 +141,9 @@ export const updateUserProfile = async (req, res, next) => {
         );
 
         // Return response
-        res.status(200).json({ updatedUserProfile });
+        res.status(200).json({
+            message: 'User profile updated',
+            updatedUserProfile });
     } catch (error) {
         next(error);
     }

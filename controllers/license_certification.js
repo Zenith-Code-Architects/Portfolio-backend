@@ -27,7 +27,7 @@ export const addLicense = async (req, res, next) => {
 
         //and save the user now with the licenseId
         await user.save();
-        res.status(201).json({ license })
+        res.status(201).json({ message: 'License added', license })
     } catch (error) {
         next(error)
     }
@@ -38,10 +38,12 @@ export const getLicense = async (req, res, next) => {
         //we are fetching license that belongs to a particular user
         const userSessionId = req.session?.user?.id || req?.user?.id;
         const allLicense = await LicenseModel.find({ user: userSessionId })
-        if (allLicense.length == 0) {
-            return res.status(200).json(allLicense);
-        }
-        res.status(200).json({ license: allLicense })
+        // if (allLicense.length == 0) {
+        //     return res.status(200).json(allLicense);
+        // }
+        res.status(200).json({ 
+            message: 'Licenses retrieved',
+            license: allLicense })
 
     } catch (error) {
         next(error)
@@ -61,7 +63,7 @@ export const getOneLicense = async (req, res, next) => {
         if (oneLicense.length == 0) {
             return res.status(200).json(oneLicense);
         }
-        res.status(200).json(licenseId) 
+        res.status(200).json({message: 'License retrieved', licenseId}) 
 
     } catch (error) {
         next(error)
@@ -94,7 +96,7 @@ export const updateLicense = async (req, res, next) => {
         if (!license) {
             return res.status(404).send('license not found');
         }
-        res.status(200).json({ license })
+        res.status(200).json({message: 'Update successful', license })
     } catch (error) {
         next(error)
     }
@@ -113,7 +115,7 @@ export const deleteLicense = async (req, res, next) => {
         }
         user.licenseCertifications.pull(req.params.id);
         await user.save();
-        res.status(200).json("license deleted");
+        res.status(200).json({message:"license deleted", deleteLicense});
     } catch (error) {
         next(error)
     }

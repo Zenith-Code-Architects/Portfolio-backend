@@ -6,15 +6,15 @@ import { checkUserSession } from "../middleware/auth.js";
 const projectRouter = Router();
 
 // Define routes
-projectRouter.post('/projects', checkUserSession, addProject); // POST /projects
+projectRouter.post('/user/projects', checkUserSession, addProject); // POST /projects
 
-projectRouter.get('/projects', checkUserSession, getAllUserProjects); // GET /projects
+projectRouter.get('/user/projects', checkUserSession, getAllUserProjects); // GET /projects
 
-projectRouter.get('/projects/:id', checkUserSession, getProjectById); // GET /project
+projectRouter.get('/user/projects/:id', checkUserSession, getProjectById); // GET /project
 
-projectRouter.patch('/projects/:id', checkUserSession, updateProjects); // PATCH /projects/:id
+projectRouter.patch('/user/projects/:id', checkUserSession, updateProjects); // PATCH /projects/:id
 
-projectRouter.delete('/projects/:id', checkUserSession, deleteProject); // DELETE /projects/:id
+projectRouter.delete('/user/projects/:id', checkUserSession, deleteProject); // DELETE /projects/:id
 
 // Export router
 export default projectRouter;

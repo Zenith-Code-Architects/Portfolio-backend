@@ -33,7 +33,9 @@ export const addSkill = async (req, res, next) => {
         await user.save();
 
         // Return success response with created skill
-        res.status(201).json({ skill });
+        res.status(201).json({ 
+            message: 'Skill added',
+            skill });
     } catch (error) {
         // Handle errors
         next(error)
@@ -47,12 +49,14 @@ export const getAllUserSkills = async (req, res, next) => {
 
         // Find all skills belonging to the user
         const allUserSkills = await SkillsModel.find({ user: userSessionId });
-        if (allUserSkills.length === 0) {
-            return res.status(200).json(allUserSkills);
-        }
+        // if (allUserSkills.length === 0) {
+        //     return res.status(200).json(allUserSkills);
+        // }
 
         // Return skills in the response
-        res.status(200).json({ skills: allUserSkills });
+        res.status(200).json({ 
+            message: 'Skills retrieval successful',
+            skills: allUserSkills });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -67,12 +71,15 @@ export const getSkillById = async (req, res, next) => {
         const skill = await SkillsModel.findById(req.params.id);
 
         // Check if skill exists and belongs to the user
-        if (!skill || skill.user.toString() !== userSessionId.toString()) {
-            return res.status(200).json(skill);
-        }
+        // if (!skill || skill.user.toString() !== userSessionId.toString()) {
+        //     return res.status(200).json(skill);
+        // }
 
         // Return the skill in the response
-        res.status(200).json({ skill });
+        res.status(200).json({
+            message: 'Skill retrieval successful',
+            skill,
+         });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -103,7 +110,9 @@ export const updateSkills = async (req, res, next) => {
         }
 
         // Return updated skill in the response
-        res.status(200).json({ updatedSkill });
+        res.status(200).json({ 
+            message: 'Skill updated',
+            updatedSkill });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -130,7 +139,10 @@ export const deleteSkill = async (req, res, next) => {
         user.skills.pull(req.params.id);
         await user.save();
         // Return success message in the response
-        res.status(200).json('Skill deleted');
+        res.status(200).json({
+            mesage: 'Skill deleted',
+            deleteSkill,
+         });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);

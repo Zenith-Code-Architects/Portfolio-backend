@@ -23,7 +23,7 @@ export const addEducation = async (req, res, next) => {
         //and save the user now with the educationId
         await user.save();
         //Return the education
-        res.status(201).json({ education })
+        res.status(201).json({ message: 'Education added', education })
     } catch (error) {
         next(error)
     }
@@ -34,10 +34,10 @@ export const getEducation = async (req, res, next) => {
         //we are fetching education that belongs to a particular user
         const userSessionId = req.session?.user?.id || req?.user?.id;
         const allEducation = await EducationModel.find({ user: userSessionId })
-        if (allEducation.length == 0) {
-            return res.status(200).json(allEducation);
-        }
-        res.status(200).json({ education: allEducation })
+        // if (allEducation.length == 0) {
+        //     return res.status(200).json(allEducation);
+        // }
+        res.status(200).json({ message: 'Educations retrieved', education: allEducation })
 
     } catch (error) {
         next(error)
@@ -57,7 +57,7 @@ export const getOneEducation = async (req, res, next) => {
         if (oneEducation.length == 0) {
             return res.status(200).json(oneEducation);
         }
-        res.status(200).json(oneEducation)
+        res.status(200).json({message: 'Education retrieved', oneEducation})
 
     } catch (error) {
         next(error)
@@ -84,7 +84,7 @@ export const updateEducation = async (req, res, next) => {
         if (!education) {
             return res.status(404).send('Education not found');
         }
-        res.status(200).json({ education })
+        res.status(200).json({ message: 'Update successful', education })
     } catch (error) {
         next(error)
     }
@@ -103,7 +103,7 @@ export const deleteEducation = async (req, res, next) => {
         }
         user.education.pull(req.params.id);
         await user.save();
-      res.status(200).json("Education deleted");
+      res.status(200).json({message:"Education deleted", deleteEducation});
     } catch (error) {
         next(error)
     }

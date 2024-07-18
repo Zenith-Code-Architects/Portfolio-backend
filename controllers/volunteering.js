@@ -28,7 +28,9 @@ export const addVolunteering = async (req, res, next) => {
         await user.save();
 
         // Return success response with created volunteering record
-        res.status(201).json({ volunteering });
+        res.status(201).json({ 
+            message: 'Volunteering added',
+            volunteering });
     } catch (error) {
         next(error)
     }
@@ -41,12 +43,14 @@ export const getAllUserVolunteering = async (req, res, next) => {
 
         // Find all volunteering records belonging to the user
         const allUserVolunteering = await VolunteeringModel.find({ user: userSessionId });
-        if (allUserVolunteering.length === 0) {
-            return res.status(200).json(allUserVolunteering);
-        }
+        // if (allUserVolunteering.length === 0) {
+        //     return res.status(200).json(allUserVolunteering);
+        // }
 
         // Return volunteering records in the response
-        res.status(200).json({ volunteering: allUserVolunteering });
+        res.status(200).json({ 
+            message: 'Volunteering retrieved',
+            volunteering: allUserVolunteering });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -66,7 +70,9 @@ export const getVolunteeringById = async (req, res, next) => {
         }
 
         // Return the volunteering record in the response
-        res.status(200).json({ volunteering });
+        res.status(200).json({
+            message: 'Volunteering retrieved',
+             volunteering });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -99,7 +105,9 @@ export const updateVolunteering = async (req, res, next) => {
         }
 
         // Return updated volunteering record in the response
-        res.status(200).json({ updatedVolunteering });
+        res.status(200).json({ 
+            message: 'Volunteering updated',
+            updatedVolunteering });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -125,7 +133,9 @@ export const deleteVolunteering = async (req, res, next) => {
         user.volunteering.pull(req.params.id);
         await user.save();
         // Return success message in the response
-        res.status(200).json('Volunteering record deleted');
+        res.status(200).json({
+         message: 'Volunteering record deleted',
+        deleteVolunteering});
     } catch (error) {
         // Pass error to error handling middleware
         next(error);

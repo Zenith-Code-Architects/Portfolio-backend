@@ -5,15 +5,15 @@ import { checkUserSession } from "../middleware/auth.js";
 // create skill router
 const skillRouter = Router();
 
-skillRouter.post('/skills', checkUserSession, addSkill)
+skillRouter.post('/user/skills', checkUserSession, addSkill)
 
-skillRouter.get('/skills', checkUserSession, getAllUserSkills)
+skillRouter.get('/user/skills', checkUserSession, getAllUserSkills)
 
-skillRouter.get('/skills/:id', checkUserSession, getSkillById)
+skillRouter.get('/user/skills/:id', checkUserSession, getSkillById)
 
-skillRouter.patch('/skills/:id', checkUserSession, updateSkills)
+skillRouter.patch('/user/skills/:id', checkUserSession, updateSkills)
 
-skillRouter.delete('/skills/:id', checkUserSession, deleteSkill)
+skillRouter.delete('/user/skills/:id', checkUserSession, deleteSkill)
 
 // export router
 export default skillRouter

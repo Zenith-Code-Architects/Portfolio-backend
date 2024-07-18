@@ -27,7 +27,9 @@ export const addProject = async (req, res, next) => {
         await user.save();
 
         // Return success response with created project
-        res.status(201).json({ project });
+        res.status(201).json({ 
+            message: 'Project added',
+            project });
     } catch (error) {
         // Handle errors
        next(error)
@@ -41,12 +43,14 @@ export const getAllUserProjects = async (req, res, next) => {
 
         // Find all projects belonging to the user
         const allUserProjects = await ProjectModel.find({ user: userSessionId });
-        if (allUserProjects.length === 0) {
-            return res.status(200).json(allUserProjects);
-        }
+        // if (allUserProjects.length === 0) {
+        //     return res.status(200).json(allUserProjects);
+        // }
 
         // Return projects in the response
-        res.status(200).json({ projects: allUserProjects });
+        res.status(200).json({ 
+            message: 'Projects retrieved',
+            projects: allUserProjects });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -67,7 +71,9 @@ export const getProjectById = async (req, res, next) => {
         }
 
         // Return the project in the response
-        res.status(200).json({ project });
+        res.status(200).json({ 
+            message: 'Project retrieved',
+            project });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -98,7 +104,9 @@ export const updateProjects = async (req, res, next) => {
         }
 
         // Return updated project in the response
-        res.status(200).json({ updatedProject });
+        res.status(200).json({ 
+            message: 'Project updated',
+            updatedProject });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
@@ -123,7 +131,9 @@ export const deleteProject = async (req, res, next) => {
         user.projects.pull(req.params.id)
         await user.save();
         // Return success message in the response
-        res.status(200).json('Project deleted');
+        res.status(200).json({
+            message: 'Project deleted',
+        deleteProject});
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
