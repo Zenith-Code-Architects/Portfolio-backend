@@ -39,7 +39,7 @@ export const getLicense = async (req, res, next) => {
         const userSessionId = req.session?.user?.id || req?.user?.id;
         const allLicense = await LicenseModel.find({ user: userSessionId })
         if (allLicense.length == 0) {
-            return res.status(400).send('No license provided')
+            return res.status(200).json(allLicense);
         }
         res.status(200).json({ license: allLicense })
 
@@ -59,7 +59,7 @@ export const getOneLicense = async (req, res, next) => {
         }
         const oneLicense = await LicenseModel.findById(licenseId)
         if (oneLicense.length == 0) {
-            return res.status(400).send('No license provided')
+            return res.status(200).json(oneLicense);
         }
         res.status(200).json(licenseId) 
 

@@ -36,7 +36,7 @@ export const getExperience = async (req, res, next) => {
 
         const allExperience = await ExperienceModel.find({ user: userSessionId  })
         if (allExperience.length == 0) {
-            return res.status(400).send('No experiences provided')
+            return res.status(200).json(allExperience);
         }
         res.status(200).json({ experience: allExperience })
 
@@ -56,7 +56,7 @@ export const getOneExperience = async (req, res, next) => {
         //Get filtered  experience from database
         const oneExperience = await ExperienceModel.findById(experienceId)
         if (oneExperience.length == 0) {
-            return res.status(400).send('No experiences provided')
+            return res.status(200).json(oneExperience);
         }
         res.status(200).json(experienceId)
 

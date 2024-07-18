@@ -35,7 +35,7 @@ export const getEducation = async (req, res, next) => {
         const userSessionId = req.session?.user?.id || req?.user?.id;
         const allEducation = await EducationModel.find({ user: userSessionId })
         if (allEducation.length == 0) {
-            return res.status(400).send('No education provided')
+            return res.status(200).json(allEducation);
         }
         res.status(200).json({ education: allEducation })
 
@@ -55,7 +55,7 @@ export const getOneEducation = async (req, res, next) => {
         //we are fetching education that belongs to a particular user
         const oneEducation = await EducationModel.findById(educationId)
         if (oneEducation.length == 0) {
-            return res.status(400).send('No education provided')
+            return res.status(200).json(oneEducation);
         }
         res.status(200).json(oneEducation)
 

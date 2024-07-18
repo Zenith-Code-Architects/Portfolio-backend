@@ -43,7 +43,7 @@ export const getAchievements = async (req, res, next) => {
         const userSessionId = req.session?.user?.id || req?.user?.id;
         const allAchievement = await AchievementModel.find({ user: userSessionId })
         if (allAchievement.length == 0) {
-            return res.status(400).send('No achievement provided')
+            return res.status(200).json({ Achievements: allAchievement });
         }
         res.status(200).json({ achievement: allAchievement })
     } catch (error) {
@@ -63,7 +63,7 @@ export const getOneAchievements = async (req, res, next) => {
         }
         const oneAchievement = await AchievementModel.findById(achievementId)
         if (oneAchievement.length == 0) {
-            return res.status(400).send('No achievement provided')
+            return res.status(200).json(oneAchievement);
         }
         res.status(200).json(oneAchievement)
     } catch (error) {

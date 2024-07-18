@@ -44,7 +44,7 @@ export const getAllUserVolunteering = async (req, res, next) => {
         // Find all volunteering records belonging to the user
         const allUserVolunteering = await VolunteeringModel.find({ user: userSessionId });
         if (allUserVolunteering.length === 0) {
-            return res.status(404).json('No volunteering records found');
+            return res.status(200).json(allUserVolunteering);
         }
 
         // Return volunteering records in the response
@@ -64,7 +64,7 @@ export const getVolunteeringById = async (req, res, next) => {
 
         // Check if volunteering record exists and belongs to the user
         if (!volunteering || volunteering.user.toString() !== userSessionId.toString()) {
-            return res.status(404).json('Volunteering record not found');
+            return res.status(200).json(volunteering);
         }
 
         // Return the volunteering record in the response

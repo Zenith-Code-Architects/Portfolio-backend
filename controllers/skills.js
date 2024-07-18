@@ -49,7 +49,7 @@ export const getAllUserSkills = async (req, res, next) => {
         // Find all skills belonging to the user
         const allUserSkills = await SkillsModel.find({ user: userSessionId });
         if (allUserSkills.length === 0) {
-            return res.status(404).json('No skills found');
+            return res.status(200).json(allUserSkills);
         }
 
         // Return skills in the response
@@ -69,7 +69,7 @@ export const getSkillById = async (req, res, next) => {
 
         // Check if skill exists and belongs to the user
         if (!skill || skill.user.toString() !== userSessionId.toString()) {
-            return res.status(404).json('Skill not found');
+            return res.status(200).json(skill);
         }
 
         // Return the skill in the response

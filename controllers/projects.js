@@ -43,7 +43,7 @@ export const getAllUserProjects = async (req, res, next) => {
         // Find all projects belonging to the user
         const allUserProjects = await ProjectModel.find({ user: userSessionId });
         if (allUserProjects.length === 0) {
-            return res.status(404).json('No projects found');
+            return res.status(200).json(allUserProjects);
         }
 
         // Return projects in the response
@@ -64,7 +64,7 @@ export const getProjectById = async (req, res, next) => {
 
         // Check if project exists and belongs to the user
         if (!project || project.user.toString() !== userSessionId.toString()) {
-            return res.status(404).json('Project not found');
+            return res.status(200).json(project);
         }
 
         // Return the project in the response
