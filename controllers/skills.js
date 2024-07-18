@@ -2,7 +2,7 @@ import { SkillsModel } from "../models/skills.js";
 import { UserModel } from "../models/user.js";
 import { skills_schema } from "../schema/skills_schema.js";
 
-export const addSkill = async (req, res) => {
+export const addSkill = async (req, res, next) => {
     try {
         // Validate skill data
         const { error, value } = skills_schema.validate(req.body);
@@ -36,8 +36,7 @@ export const addSkill = async (req, res) => {
         res.status(201).json({ skill });
     } catch (error) {
         // Handle errors
-        console.error("Error adding skill:", error);
-        res.status(500).send(error.message);
+        next(error)
     }
 };
 

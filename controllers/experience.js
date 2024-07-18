@@ -3,7 +3,7 @@ import { UserModel } from "../models/user.js";
 import { experience_schema } from "../schema/experience_schema.js";
 
 // Validation & errror handling
-export const addExperience = async (req, res) => {
+export const addExperience = async (req, res, next) => {
     try {
         const { error, value } = experience_schema.validate(req.body)
         if (error) {
@@ -25,7 +25,7 @@ export const addExperience = async (req, res) => {
         //Return the experience
         res.status(201).json({ experience })
     } catch (error) {
-        res.status(500).send(error)
+        next(error)
     }
 }
 
@@ -65,7 +65,7 @@ export const getOneExperience = async (req, res, next) => {
     }
 }
 
-export const updateExperience = async (req, res) => {
+export const updateExperience = async (req, res, next) => {
 
     try {
         const { error, value } = experience_schema.validate(req.body)
@@ -87,11 +87,11 @@ export const updateExperience = async (req, res) => {
         }
         res.status(200).json({ experience })
     } catch (error) {
-        res.status(500)
+        next(error)
     }
 }
 
-export const deleteExperience = async (req, res) => {
+export const deleteExperience = async (req, res, next) => {
     try {
         const idExperience = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(idExperience);
@@ -106,6 +106,6 @@ export const deleteExperience = async (req, res) => {
         await user.save();
         res.status(200).json("Experience deleted");
     } catch (error) {
-        res.status(500)
+        next(error)
     }
 }

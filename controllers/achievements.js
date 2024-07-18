@@ -4,7 +4,7 @@ import { achievement_schema } from "../schema/achievement_schema.js"
 
 
 // Validation & errror handling
-export const addAchievements = async (req, res) => {
+export const addAchievements = async (req, res, next) => {
 
     try {
         const { error, value } = achievement_schema.validate(req.body)
@@ -33,7 +33,7 @@ export const addAchievements = async (req, res) => {
         //Return the achievement
         res.status(201).json({ achievement })
     } catch (error) {
-        res.status(500).send(error)
+        next(error)
     }
 }
 
@@ -106,7 +106,7 @@ export const updateAchievements = async (req, res, next) => {
 }
 
 
-export const deleteAchievements = async (req, res) => {
+export const deleteAchievements = async (req, res, next) => {
     try {
         const idAchievement = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(idAchievement);
@@ -121,6 +121,6 @@ export const deleteAchievements = async (req, res) => {
         await user.save();
         res.status(200).json('Achievement Deleted')
     } catch (error) {
-        res.status(500)
+        next(error)
     }
 }

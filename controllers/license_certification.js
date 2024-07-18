@@ -3,7 +3,7 @@ import { UserModel } from "../models/user.js";
 import { license_schema } from "../schema/license_schema.js";
 
 // Validation & errror handling
-export const addLicense = async (req, res) => {
+export const addLicense = async (req, res, next) => {
     try {
         const { error, value } = license_schema.validate(req.body)
         if (error) {
@@ -29,7 +29,7 @@ export const addLicense = async (req, res) => {
         await user.save();
         res.status(201).json({ license })
     } catch (error) {
-        res.status(500).send(error)
+        next(error)
     }
 }
 
@@ -68,7 +68,7 @@ export const getOneLicense = async (req, res, next) => {
     }
 }
 
-export const updateLicense = async (req, res) => {
+export const updateLicense = async (req, res, next) => {
 
     try {
         const { error, value } = license_schema.validate({
@@ -96,11 +96,11 @@ export const updateLicense = async (req, res) => {
         }
         res.status(200).json({ license })
     } catch (error) {
-        res.status(500)
+        next(error)
     }
 }
 
-export const deleteLicense = async (req, res) => {
+export const deleteLicense = async (req, res, next) => {
     try {
         const idLicense = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(idLicense);
@@ -115,6 +115,6 @@ export const deleteLicense = async (req, res) => {
         await user.save();
         res.status(200).json("license deleted");
     } catch (error) {
-        res.status(500)
+        next(error)
     }
 }

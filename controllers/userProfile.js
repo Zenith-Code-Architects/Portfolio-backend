@@ -3,7 +3,7 @@ import { UserModel } from "../models/user.js";
 import { userProfile_schema } from "../schema/userProfile_schema.js";
 
 // create one user profile per user
-export const addUserProfile = async (req, res) => {
+export const addUserProfile = async (req, res, next) => {
     try {
         const { error, value } = userProfile_schema.validate({
             ...req.body,
@@ -38,6 +38,7 @@ export const addUserProfile = async (req, res) => {
             return res.status(400).json('User profile already exists');
         }
         res.status(500).send(error);
+        next(error)
     }
 };
 

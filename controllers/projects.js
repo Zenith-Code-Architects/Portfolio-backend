@@ -2,7 +2,7 @@ import { ProjectModel } from "../models/projects.js";
 import { UserModel } from "../models/user.js";
 import { project_schema } from "../schema/projects_schema.js";
 
-export const addProject = async (req, res) => {
+export const addProject = async (req, res, next) => {
     try {
         // Validate project data
         const { error, value } = project_schema.validate(req.body);
@@ -30,8 +30,7 @@ export const addProject = async (req, res) => {
         res.status(201).json({ project });
     } catch (error) {
         // Handle errors
-        console.error("Error adding project:", error);
-        res.status(500).send(error.message);
+       next(error)
     }
 };
 

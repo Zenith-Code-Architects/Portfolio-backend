@@ -2,7 +2,7 @@ import { VolunteeringModel } from "../models/volunteering.js";
 import { UserModel } from "../models/user.js";
 import { volunteering_schema } from "../schema/volunteering_schema.js";
 
-export const addVolunteering = async (req, res) => {
+export const addVolunteering = async (req, res, next) => {
     try {
         // Validate volunteering data
         const { error, value } = volunteering_schema.validate(req.body);
@@ -30,9 +30,7 @@ export const addVolunteering = async (req, res) => {
         // Return success response with created volunteering record
         res.status(201).json({ volunteering });
     } catch (error) {
-        // Handle errors
-        console.error("Error adding volunteering:", error);
-        res.status(500).send(error.message);
+        next(error)
     }
 };
 

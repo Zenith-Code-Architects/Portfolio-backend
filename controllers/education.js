@@ -3,7 +3,7 @@ import { UserModel } from "../models/user.js";
 import { education_schema } from "../schema/education_schema.js";
 
 // Validation & errror handling
-export const addEducation = async (req, res) => {
+export const addEducation = async (req, res, next) => {
     try {
         const { error, value } = education_schema.validate(req.body)
         if (error) {
@@ -25,7 +25,7 @@ export const addEducation = async (req, res) => {
         //Return the education
         res.status(201).json({ education })
     } catch (error) {
-        res.status(500).send(error)
+        next(error)
     }
 }
 
@@ -64,7 +64,7 @@ export const getOneEducation = async (req, res, next) => {
     }
 }
 
-export const updateEducation = async (req, res) => {
+export const updateEducation = async (req, res, next) => {
 
     try {
         const { error, value } = education_schema.validate(req.body)
@@ -86,11 +86,11 @@ export const updateEducation = async (req, res) => {
         }
         res.status(200).json({ education })
     } catch (error) {
-        res.status(500)
+        next(error)
     }
 }
 
-export const deleteEducation = async (req, res) => {
+export const deleteEducation = async (req, res, next) => {
     try {
         const idEducation = req.session?.user?.id || req?.user?.id;
         const user = await UserModel.findById(idEducation);
@@ -105,6 +105,6 @@ export const deleteEducation = async (req, res) => {
         await user.save();
       res.status(200).json("Education deleted");
     } catch (error) {
-        res.status(500).json({error})
+        next(error)
     }
 };

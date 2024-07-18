@@ -4,21 +4,25 @@ import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 
 // Check if username or email exists
-export const getUsers = async (req, res) => {
-   const email = req.query.email?.toLowerCase()
-   const userName = req.query.userName?.toLowerCase();
- 
-   const filter = {};
-   if (email) {
-     filter.email = email;
-   }
-   if (userName) {
-     filter.userName = userName;
-   }
- 
-   const users = await UserModel.find(filter);
- 
-   return res.status(200).json({ users });
+export const getUsers = async (req, res, next) => {
+  try {
+    const email = req.query.email?.toLowerCase()
+    const userName = req.query.userName?.toLowerCase();
+  
+    const filter = {};
+    if (email) {
+      filter.email = email;
+    }
+    if (userName) {
+      filter.userName = userName;
+    }
+  
+    const users = await UserModel.find(filter);
+  
+    return res.status(200).json({ users });
+  } catch (error) {
+   next(error)
+  }
  };
 
 // Sign up with validation & error handling
