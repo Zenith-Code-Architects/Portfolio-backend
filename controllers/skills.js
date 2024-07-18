@@ -18,6 +18,12 @@ export const addSkill = async (req, res) => {
         if (!user) {
             return res.status(404).json('User not found');
         }
+        // checks if skill already exist for a user
+        const {name} = req.body;
+        const existingSkill = await SkillsModel.findOne({name: name}, {user: userSessionId});
+        if(existingSkill) {
+            return res.status(409).json('This skill already exists for this user')
+        }
 
         // Create new skill and associate it with the user
         const skill = await SkillsModel.create({ ...value, user: userSessionId });
@@ -48,6 +54,26 @@ export const getAllUserSkills = async (req, res, next) => {
 
         // Return skills in the response
         res.status(200).json({ skills: allUserSkills });
+    } catch (error) {
+        // Pass error to error handling middleware
+        next(error);
+    }
+};
+
+export const getSkillById = async (req, res, next) => {
+    try {
+        const userSessionId = req.session?.user?.id || req?.user?.id;
+
+        // Find skill by ID and user
+        const skill = await SkillsModel.findById(req.params.id);
+
+        // Check if skill exists and belongs to the user
+        if (!skill || skill.user.toString() !== userSessionId.toString()) {
+            return res.status(404).json('Skill not found');
+        }
+
+        // Return the skill in the response
+        res.status(200).json({ skill });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);

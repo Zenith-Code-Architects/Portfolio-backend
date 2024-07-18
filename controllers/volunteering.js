@@ -10,7 +10,8 @@ export const addVolunteering = async (req, res) => {
             return res.status(400).send(error.details[0].message);
         }
 
-        // Get user ID from session
+        // Get user ID from session or request(token)
+        
         const userSessionId = req.session?.user?.id || req?.user?.id;
 
         // Find the user by userSessionId
@@ -37,7 +38,7 @@ export const addVolunteering = async (req, res) => {
 
 export const getAllUserVolunteering = async (req, res, next) => {
     try {
-        // Get user ID from session
+        // Get user ID from session or request
         const userSessionId = req.session?.user?.id || req?.user?.id;
 
         // Find all volunteering records belonging to the user
@@ -48,6 +49,26 @@ export const getAllUserVolunteering = async (req, res, next) => {
 
         // Return volunteering records in the response
         res.status(200).json({ volunteering: allUserVolunteering });
+    } catch (error) {
+        // Pass error to error handling middleware
+        next(error);
+    }
+};
+
+export const getVolunteeringById = async (req, res, next) => {
+    try {
+        const userSessionId = req.session?.user?.id || req?.user?.id;
+
+        // Find volunteering record by ID and user
+        const volunteering = await VolunteeringModel.findById(req.params.id);
+
+        // Check if volunteering record exists and belongs to the user
+        if (!volunteering || volunteering.user.toString() !== userSessionId.toString()) {
+            return res.status(404).json('Volunteering record not found');
+        }
+
+        // Return the volunteering record in the response
+        res.status(200).json({ volunteering });
     } catch (error) {
         // Pass error to error handling middleware
         next(error);
