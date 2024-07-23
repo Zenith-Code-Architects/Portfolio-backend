@@ -98,9 +98,13 @@ export const getUserProfile = async (req, res, next) => {
     try {
         //Get user id from session or request
         const userSessionId = req.session?.user?.id || req?.user?.id;
-        const userProfile = await UserProfileModel.find({ user: userSessionId });
+        const userProfile = await UserProfileModel.findOne({ user: userSessionId })
+        .populate({ 
+            path: 'user', 
+            select: '-password' 
+        });
         if (!userProfile) {
-            return res.status(404).json('No profile added');
+            return res.status(200).json({userProfile});
         }
         // Return response
         res.status(200).json({ 
@@ -120,30 +124,39 @@ export const updateUserProfile = async (req, res, next) => {
             profilePicture: req.files.profilePicture[0].filename,
             resume: req.files.resume[0].filename,
         });
+        if (error) {
+            return res.status(400).send(error.details[0].message);
+          }
         // Find user profile by ID and user session ID
-        const userProfile = await UserProfileModel.findOne({
-            _id: req.params.id,
-            user: req.session.user.id
-        });
-        if (!userProfile) {
-            return res.status(404).json('User profile not found');
+        const userId = req.session?.user?.id || req?.user.id;
+        const user = await UserModel.findById(userId);
+        if (!user) {
+          return res.status(404).send("User not found");
         }
 
+        // const userProfile = await UserProfileModel.findOne({
+        //     _id: req.params.id,
+        //     user: req.session.user.id
+        // });
+       
+
         // Update user profile with new data
-        const updatedUserProfile = await UserProfileModel.findByIdAndUpdate(
-            req.params.id,
-            {
-                ...req.body,
-                profilePicture: req.files.profilePicture ? req.files.profilePicture[0].filename : userProfile.profilePicture,
-                resume: req.files.resume ? req.files.resume[0].filename : userProfile.resume
-            },
+        const userProfile = await UserProfileModel.findByIdAndUpdate(
+            req.params.id, value,
+            // {
+            //     ...req.body,
+            //     profilePicture: req.files.profilePicture ? req.files.profilePicture[0].filename : userProfile.profilePicture,
+            //     resume: req.files.resume ? req.files.resume[0].filename : userProfile.resume
+            // },
             { new: true }
         );
-
+         if (!userProfile) {
+            return res.status(404).json('User profile not found');
+        }
         // Return response
         res.status(200).json({
             message: 'User profile updated',
-            updatedUserProfile });
+            userProfile });
     } catch (error) {
         next(error);
     }
