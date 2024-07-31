@@ -24,8 +24,8 @@ export const addUserProfile = async (req, res, next) => {
         const userProfile = await UserProfileModel.create({
             ...value,
             user: userSessionId,
-            profilePicture: req.files.profilePicture[0].filename,
-            resume: req.files.resume[0].filename
+            profilePicture: req.files?.profilePicture[0]?.filename,
+            resume: req.files?.resume[0]?.filename
         });
         // Update user's userProfile reference
         user.userProfile = userProfile.id;
@@ -121,8 +121,8 @@ export const updateUserProfile = async (req, res, next) => {
         // validation
         const { error, value } = userProfile_schema.validate({
             ...req.body,
-            profilePicture: req.files.profilePicture[0].filename,
-            resume: req.files.resume[0].filename,
+            profilePicture: req.files?.profilePicture[0]?.filename,
+            resume: req.files?.resume[0]?.filename,
         });
         if (error) {
             return res.status(400).send(error.details[0].message);

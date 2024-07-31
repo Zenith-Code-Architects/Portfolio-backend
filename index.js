@@ -26,7 +26,8 @@ expressOasGenerator.handleResponses(portfolioapp, {
 
 //Apply midlleware
 portfolioapp.use(cors({credentials: true, origin: '*'}));
-portfolioapp.use(express.json());
+portfolioapp.use(express.json({ limit: '50mb' }));
+portfolioapp.use(express.urlencoded({ limit: '50mb', extended: true }));
 portfolioapp.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
